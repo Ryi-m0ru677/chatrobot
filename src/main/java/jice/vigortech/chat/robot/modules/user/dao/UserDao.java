@@ -18,7 +18,7 @@ public interface UserDao {
 			+ "from sys_user where del_flag=0 "
 			//+ "and login_name=#{name} "
 			)
-	User getUser();
+	List<User> getUser();
 	
 	@Select("SELECT DISTINCT a.`name` FROM sys_menu a "
 			+ "JOIN sys_role_menu b ON a.id = b.menu_id "

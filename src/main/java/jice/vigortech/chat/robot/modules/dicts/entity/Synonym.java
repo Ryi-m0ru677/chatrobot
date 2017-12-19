@@ -1,4 +1,4 @@
-package jice.vigortech.chat.robot.modules.entities.entity;
+package jice.vigortech.chat.robot.modules.dicts.entity;
 
 import java.io.Serializable;
 
@@ -10,10 +10,20 @@ public class Synonym implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	private Integer id;
-	private Integer entities;
+	private Integer dictId;//词库id
 	private String keyword;// 关键词
 	private Integer synonymyFlag;// 是否有同义词
 	private String synonymy;// 同义词
+	private Integer delFlag;
+	
+	
+	public Integer getDelFlag() {
+		return delFlag;
+	}
+
+	public void setDelFlag(Integer delFlag) {
+		this.delFlag = delFlag;
+	}
 
 	public Integer getId() {
 		return id;
@@ -23,12 +33,13 @@ public class Synonym implements Serializable {
 		this.id = id;
 	}
 
-	public Integer getEntities() {
-		return entities;
+	
+	public Integer getDictId() {
+		return dictId;
 	}
 
-	public void setEntities(Integer entities) {
-		this.entities = entities;
+	public void setDictId(Integer dictId) {
+		this.dictId = dictId;
 	}
 
 	public String getKeyword() {

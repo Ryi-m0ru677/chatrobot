@@ -1,5 +1,6 @@
 package jice.vigortech.test;
 
+import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,5 +18,6 @@ public class UserDaoTest {
 	@Test
 	public void testGetUserByName(){
 		System.out.println(userDao.getUser());
+		Assert.assertTrue(userDao.getUser().size()>0);
 	}
 }

@@ -1,17 +1,19 @@
 package jice.vigortech.chat.robot.modules.application.entity;
 
 import java.io.Serializable;
-import java.util.List;
 
-import jice.vigortech.chat.robot.modules.intents.entity.Intents;
+import org.hibernate.validator.constraints.NotBlank;
 
-public class Application implements Serializable {
+import jice.vigortech.chat.robot.common.model.entity.BaseEntity;
+
+public class Application extends BaseEntity implements Serializable {
 
 	/**
 	 * 应用
 	 */
 	private static final long serialVersionUID = 1L;
 	private Integer id;
+	@NotBlank(message="应用名称不能为空!")
 	private String name;
 	private Integer isPrivate;
 	private String link;
@@ -19,9 +21,18 @@ public class Application implements Serializable {
 	private String zone;// 时区
 	private String clientToken;
 	private String devToken;
-	private List<String> defaultReply;// 默认回复
-	private List<Intents> intents;
-	private Integer delflag;
+	private String describe;
+	private String defReply;// 默认回复
+	private String storage;//存储方式
+	
+
+	public Application getApp(String name, Integer isPrivate, String defaultReply) {
+		Application app = new Application();
+		app.setName(name);
+		app.setId(isPrivate);
+		app.setDefReply(defaultReply);
+		return app;
+	}
 
 	public Integer getId() {
 		return id;
@@ -53,6 +64,14 @@ public class Application implements Serializable {
 
 	public void setLink(String link) {
 		this.link = link;
+	}
+
+	public String getDescribe() {
+		return describe;
+	}
+
+	public void setDescribe(String describe) {
+		this.describe = describe;
 	}
 
 	public String getLanguage() {
@@ -87,28 +106,21 @@ public class Application implements Serializable {
 		this.devToken = devToken;
 	}
 
-	public List<String> getDefaultReply() {
-		return defaultReply;
+	
+
+	public String getDefReply() {
+		return defReply;
 	}
 
-	public void setDefaultReply(List<String> defaultReply) {
-		this.defaultReply = defaultReply;
+	public void setDefReply(String defReply) {
+		this.defReply = defReply;
 	}
 
-	public List<Intents> getIntents() {
-		return intents;
+	public String getStorage() {
+		return storage;
 	}
 
-	public void setIntents(List<Intents> intents) {
-		this.intents = intents;
+	public void setStorage(String storage) {
+		this.storage = storage;
 	}
-
-	public Integer getDelflag() {
-		return delflag;
-	}
-
-	public void setDelflag(Integer delflag) {
-		this.delflag = delflag;
-	}
-
 }

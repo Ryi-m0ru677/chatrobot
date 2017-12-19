@@ -2,12 +2,15 @@ package jice.vigortech.chat.robot.common.model.web;
 
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletResponse;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.ObjectError;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
@@ -50,4 +53,11 @@ public abstract class BaseController {
 		response.getWriter().flush();
 		response.getWriter().close();
 	}
+	
+	public void setErrorResultCode(BindingResult result) {
+		List<ObjectError> list = result.getAllErrors();
+		resCode = ResultCode.createResultCode(list.get(0).getDefaultMessage());
+        data = null;
+	}
+
 }

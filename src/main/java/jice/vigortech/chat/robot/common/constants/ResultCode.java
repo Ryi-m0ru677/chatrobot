@@ -23,7 +23,7 @@ public enum ResultCode {
 	USER_NAME_EMPTY("204", "用户姓名不能为空"), 
 	USER_MOBILE_EMPTY("205", "用户手机号不能为空"), 
 	
-	
+	APP_NOT_EXIST("301","应用不存在"),
 	
 	
 	ROLE_NAME_EMPTY("601", "权限名不能为空"),

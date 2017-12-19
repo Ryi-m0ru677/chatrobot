@@ -4,8 +4,9 @@ public class SysConstants{
 
 	
 	public final static String SYS_URL = "/chat/robot";
-	public final static String PAGE_SIZE = "/chat/robot";
-	
+	public final static String PAGE_SIZE = "";
+	public final static boolean SERVER_ALLOW_CORSDOMAIN = true;
+	public final static String SERVER_CORSDOMAIN = "*";
 	
 	
 

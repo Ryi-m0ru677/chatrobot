@@ -18,6 +18,7 @@ import org.springframework.stereotype.Controller;
 
 import jice.vigortech.chat.robot.common.constants.ResultCode;
 import jice.vigortech.chat.robot.common.model.web.BaseController;
+import jice.vigortech.chat.robot.common.util.CorsHandler;
 
 @Controller
 public class LoginController extends BaseController implements LogoutSuccessHandler,AuthenticationSuccessHandler,AuthenticationFailureHandler {
@@ -39,6 +40,7 @@ public class LoginController extends BaseController implements LogoutSuccessHand
 			resCode = ResultCode.OPERATION_FAILED;
 		}
 		data = null;
+		CorsHandler.addCorsMapping(response);
 		writeResponse(response);
 	}
 	
@@ -52,6 +54,7 @@ public class LoginController extends BaseController implements LogoutSuccessHand
 		System.out.println(username);
 		
 		resCode = ResultCode.OPERATION_SUCCESSED;
+		CorsHandler.addCorsMapping(response);
 		writeResponse(response);	
 	}
 	/**
@@ -62,6 +65,7 @@ public class LoginController extends BaseController implements LogoutSuccessHand
 			throws IOException, ServletException {
 		data = null;
 		resCode = ResultCode.OPERATION_SUCCESSED;
+		CorsHandler.addCorsMapping(response);
 		writeResponse(response);
 	}
 }
