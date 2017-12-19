@@ -11,6 +11,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import jice.vigortech.chat.robot.common.constants.ResultCode;
+import jice.vigortech.chat.robot.modules.intents.dao.IntentDao;
 import jice.vigortech.chat.robot.modules.intents.entity.Intents;
 import jice.vigortech.chat.robot.modules.intents.entity.RobotAction;
 import jice.vigortech.chat.robot.modules.intents.entity.Talk;
@@ -21,8 +22,10 @@ import jice.vigortech.chat.robot.modules.intents.service.IntentService;
 public class IntentTest {
 	@Autowired
 	IntentService intentService;
+	@Autowired
+	IntentDao intentDao;
 	@Test
-	public void intsertIntentTest(){
+	public void insertIntentTest(){
 		Intents itemp = new Intents();
 		RobotAction atemp = new RobotAction();
 		atemp.setIntentId(itemp.getId());
@@ -40,6 +43,15 @@ public class IntentTest {
 		itemp.setAction(rlist);
 		itemp.setAppId(1);
 		itemp.setName("上课");
-		Assert.assertTrue(intentService.insertIntent(itemp, 1)==ResultCode.OPERATION_SUCCESSED);
+		Assert.assertTrue(intentService.insertIntent(itemp, 1)==ResultCode.OPERATION_FAILED);
+	}
+	
+	@Test
+	public void insertActionTest(){
+		RobotAction atemp = new RobotAction();
+		atemp.setIntentId(1);
+		atemp.setFlag(1);
+		atemp.setMesssage("adshfkjsdahf");
+		intentDao.insertAction(atemp);
 	}
 }
