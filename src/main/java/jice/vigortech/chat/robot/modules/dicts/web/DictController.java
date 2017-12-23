@@ -1,4 +1,4 @@
-package jice.vigortech.chat.robot.modules.application.web;
+package jice.vigortech.chat.robot.modules.dicts.web;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.BindingResult;
@@ -11,68 +11,60 @@ import org.springframework.web.bind.annotation.RestController;
 import jice.vigortech.chat.robot.common.constants.ResultCode;
 import jice.vigortech.chat.robot.common.constants.SysConstants;
 import jice.vigortech.chat.robot.common.model.web.BaseController;
-import jice.vigortech.chat.robot.modules.application.entity.Application;
-import jice.vigortech.chat.robot.modules.application.service.AppService;
-
+import jice.vigortech.chat.robot.modules.dicts.entity.Dicts;
+import jice.vigortech.chat.robot.modules.dicts.service.DictService;
 @RestController
-@RequestMapping(path = SysConstants.SYS_URL+"/app",method={RequestMethod.GET})
-public class ApplicationController extends BaseController{
-	/**
-	 * 获取应用列表
-	 * @return
-	 */
-	@Autowired 
-	AppService appService;
+@RequestMapping(path=SysConstants.SYS_URL+"/dict", method={RequestMethod.GET})
+public class DictController extends BaseController{
+
+	@Autowired
+	DictService dictService;
 	@RequestMapping("/list")
-	public String getAppList(/*PageQuery query,*/@RequestParam("name") String name){
-		//TODO加上user当参数做数据权限
-		data=appService.getAppList(name);
+	public String getDicList(@RequestParam("name") String name,@RequestParam("appId") Integer appId){
+		data = dictService.getDicList(name,appId);
 		resCode = ResultCode.OPERATION_SUCCESSED;
 		return Result();
 	}
+	
 	@RequestMapping("/del")
-	public String delApp(@RequestParam("id") Integer id){
-		resCode = appService.delApp(id); 
-		data = null;
+	public String deleteDict(@RequestParam("id") Integer id){
+		data=null;
+		resCode = dictService.deleteDictById(id);
 		return Result();
 	}
+	
 	@RequestMapping("/add")
-	public String addApp(@Validated Application app , BindingResult result){
+	public String addDict(@Validated Dicts dict, @RequestParam("appId") Integer appId,BindingResult result){
 		if(result.hasErrors()){
 			setErrorResultCode(result);
 		}else{
 			try {
-				data = appService.addApp(app);
-				if(data instanceof ResultCode) {
+				data = dictService.insertDict(dict,appId);
+				if(data instanceof ResultCode){
 					resCode = (ResultCode) data;
-					data = null;
-				} else {
-					resCode = ResultCode.OPERATION_SUCCESSED;
+					data=null;
 				}
 			} catch (Exception e) {
-				e.printStackTrace();
-				data = null;
 				resCode = ResultCode.OPERATION_FAILED;
+				data = null;
 			}
 		}
 		return Result();
 	}
 	
 	@RequestMapping("/detail")
-	public String getAppDetail(@RequestParam("id") Integer id){
-		try{
-			
-			data = appService.getAppDetail(id);
+	public String getDictDetail(@RequestParam("id")Integer id){
+		try {
+			data = dictService.getDictDetail(id);
 			if(data instanceof ResultCode){
-				data =null;
 				resCode = (ResultCode) data;
+				data=null;
 			}else{
 				resCode = ResultCode.OPERATION_SUCCESSED;
 			}
-		}catch(Exception e){
+		} catch (Exception e) {
 			e.printStackTrace();
-			data =null;
-			resCode = ResultCode.OPERATION_SUCCESSED;
+			data=null;
 		}
 		return Result();
 	}

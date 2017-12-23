@@ -2,7 +2,7 @@ package jice.vigortech.chat.robot.modules.intents.entity;
 
 import java.io.Serializable;
 
-public class RobotAction implements Serializable{
+public class Slot implements Serializable{
 
 	/**
 	 * 动作
@@ -14,8 +14,7 @@ public class RobotAction implements Serializable{
 	private Integer flag;//是否必须
 	private String typeName;//参数名称
 	private String type;//参数类型--词库中取
-	private String values;//取值
-	private String messsage;//提示语
+	private String message;//提示语
 	private String defValue;//默认值
 	private Integer delFlag;
 	
@@ -57,17 +56,11 @@ public class RobotAction implements Serializable{
 	public void setType(String type) {
 		this.type = type;
 	}
-	public String getValues() {
-		return values;
+	public String getMessage() {
+		return message;
 	}
-	public void setValues(String values) {
-		this.values = values;
-	}
-	public String getMesssage() {
-		return messsage;
-	}
-	public void setMesssage(String messsage) {
-		this.messsage = messsage;
+	public void setMessage(String message) {
+		this.message = message;
 	}
 	public String getDefValue() {
 		return defValue;

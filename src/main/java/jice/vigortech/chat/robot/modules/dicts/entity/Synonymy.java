@@ -2,7 +2,7 @@ package jice.vigortech.chat.robot.modules.dicts.entity;
 
 import java.io.Serializable;
 
-public class Synonym implements Serializable {
+public class Synonymy implements Serializable {
 
 	/**
 	 * 同义词
@@ -12,7 +12,6 @@ public class Synonym implements Serializable {
 	private Integer id;
 	private Integer dictId;//词库id
 	private String keyword;// 关键词
-	private Integer synonymyFlag;// 是否有同义词
 	private String synonymy;// 同义词
 	private Integer delFlag;
 	
@@ -55,18 +54,7 @@ public class Synonym implements Serializable {
 	}
 
 	public void setSynonymy(String synonymy) {
-		if (synonymyFlag == 1) {
-			this.synonymy = null;
-		}
+		
 		this.synonymy = synonymy;
 	}
-
-	public Integer getSynonymyFlag() {
-		return synonymyFlag;
-	}
-
-	public void setSynonymyFlag(Integer synonymyFlag) {
-		this.synonymyFlag = synonymyFlag;
-	}
-
 }

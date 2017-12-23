@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.util.List;
 
 import jice.vigortech.chat.robot.common.model.entity.BaseEntity;
+import jice.vigortech.chat.robot.common.util.PinyinUtil;
 
 public class Dicts extends BaseEntity implements Serializable {
 
@@ -15,8 +16,17 @@ public class Dicts extends BaseEntity implements Serializable {
 	private Integer id;
 	private Integer appId;//应用的id
 	private String name;
-	private List<Synonym> word;// 同义词
+	protected String pinyin;
+	private Integer synonymyFlag;// 是否有同义词
+	private List<Synonymy> word;// 同义词
 
+	public Integer getSynonymyFlag() {
+		return synonymyFlag;
+	}
+	
+	public void setSynonymyFlag(Integer synonymyFlag) {
+		this.synonymyFlag = synonymyFlag;
+	}
 	public Integer getId() {
 		return id;
 	}
@@ -43,14 +53,15 @@ public class Dicts extends BaseEntity implements Serializable {
 		this.name = name;
 	}
 
-	public List<Synonym> getWord() {
+	public List<Synonymy> getWord() {
 		return word;
 	}
 
-	public void setWord(List<Synonym> word) {
+	public void setWord(List<Synonymy> word) {
 		this.word = word;
 	}
 
-	
-
+	public String getPinyin() {
+		return PinyinUtil.getPingYin(name);
+	}
 }

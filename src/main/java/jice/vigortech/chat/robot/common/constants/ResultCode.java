@@ -23,12 +23,14 @@ public enum ResultCode {
 	USER_NAME_EMPTY("204", "用户姓名不能为空"), 
 	USER_MOBILE_EMPTY("205", "用户手机号不能为空"), 
 	
-	APP_NOT_EXIST("301","应用不存在"),
-	
+	APP_NOT_EXIST("310","应用不存在"),
+	INTENT_NOT_EXIST("310","场景不存在"),
+	INTENT_HAS_EXIST("310","场景已经存在"),
+	DICT_NOT_EXIST("320","词库不存在"),
 	
 	ROLE_NAME_EMPTY("601", "权限名不能为空"),
 	ROLE_NAME_EXIST("602", "权限名已存在"), 
-	ROLE_NOTEXIST("603", "权限不存在"),
+	ROLE_NOTEXIST("603", "权限不存在"), 
 	
 	;
 

@@ -1,5 +1,9 @@
 package jice.vigortech.chat.robot.modules.intents.service;
 
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -7,9 +11,10 @@ import org.springframework.transaction.annotation.Transactional;
 import jice.vigortech.chat.robot.common.constants.ResultCode;
 import jice.vigortech.chat.robot.modules.application.dao.AppDao;
 import jice.vigortech.chat.robot.modules.intents.dao.IntentDao;
+import jice.vigortech.chat.robot.modules.intents.entity.Ask;
+import jice.vigortech.chat.robot.modules.intents.entity.Entity;
 import jice.vigortech.chat.robot.modules.intents.entity.Intents;
-import jice.vigortech.chat.robot.modules.intents.entity.RobotAction;
-import jice.vigortech.chat.robot.modules.intents.entity.Talk;
+import jice.vigortech.chat.robot.modules.intents.entity.Slot;
 
 @Service
 public class IntentService {
@@ -18,34 +23,132 @@ public class IntentService {
 	@Autowired
 	IntentDao intentDao;
 	/**
-	 * 
+	 * 添加/修改 场景
 	 * @param intent
+	 * @param id 应用id
+	 * @return
+	 */
+	@Transactional(readOnly=false, rollbackFor=Exception.class)
+	public Object insertIntent(Intents intent, Integer id) {
+		intent.setAppId(id);
+		if(appDao.getAppById(id)==null){
+			return ResultCode.APP_NOT_EXIST;
+		}
+		
+		if(intent.getId()==null){
+			//添加
+			try {
+				if(intentDao.checkByName(intent.getName())!=null){
+					return ResultCode.INTENT_HAS_EXIST;
+				}
+				if(intentDao.insertIntent(intent)>0){
+					for (Ask ask : intent.getAsk()) {
+						ask.setIntent(intent.getName());
+						//String text = ask.getText();
+						if(intentDao.insertAsk(ask)>0){
+							for(Entity entity:ask.getEntity()){
+								entity.setAskId(ask.getId());
+								/*
+								String value = entity.getValue();
+								int start = text.indexOf(value);
+								int end = start+value.length();
+								entity.setStart(start);
+								entity.setEnd(end);*/
+								intentDao.insertEntity(entity);
+							}
+						}
+					}
+					for(Slot Slot :intent.getAction()){
+						Slot.setIntentId(intent.getId());
+						intentDao.insertAction(Slot);
+					}
+				}
+				return ResultCode.OPERATION_SUCCESSED;
+			} catch (Exception e) {
+				e.printStackTrace();
+				return ResultCode.OPERATION_FAILED;
+			}
+		}
+		//修改
+		Map<String,Object> old = intentDao.getIntentById(intent.getId());
+		if(old==null){
+			return ResultCode.INTENT_NOT_EXIST;
+		}
+		if(intentDao.updateIntent(intent)>=0 ){
+			for (Ask ask : intent.getAsk()) {
+				intentDao.updateAsk(ask);
+				for(Entity entity:ask.getEntity()){
+					intentDao.updateEntity(entity);
+				}
+			}
+			for(Slot action :intent.getAction()){
+				intentDao.updateAction(action);
+			}
+			return intent.getId();
+		}
+		return ResultCode.OPERATION_FAILED;
+		
+	}
+	/**
+	 * 删除 场景
 	 * @param id
 	 * @return
 	 */
 	@Transactional(readOnly=false, rollbackFor=Exception.class)
-	public ResultCode insertIntent(Intents intent, Integer id) {
-		 
-		if(appDao.findAppById(id)==null){
-			return ResultCode.APP_NOT_EXIST;
+	public ResultCode deleteIntent(Integer id) {
+		//权限验证
+		Map<String,Object> intent  = intentDao.getIntentById(id);
+		if(intent==null){
+			return ResultCode.INTENT_NOT_EXIST;
 		}
-		try {
-			intent.setAppId(id);
-			for (Talk talk : intent.getTalk()) {
-				talk.setIntentsId(intent.getId());
-				intentDao.insertTalk(talk);
+		if(intentDao.deleteIntent(id)>0){
+			String iname = (String) intent.get("name");
+			List<Map<String,Object>> askList = intentDao.getAskListByIName(iname);
+			for (Map<String, Object> map : askList) {
+				Integer aid =  (Integer) map.get("id");
+				intentDao.deleteEntityListByAId(aid);
 			}
-			for(RobotAction action :intent.getAction()){
-				action.setIntentId(intent.getId());
-				intentDao.insertAction(action);
-			}
-			intentDao.insertIntent(intent);
+			intentDao.deleteAskByName(iname);
+			intentDao.deleteSlot(id);
 			return ResultCode.OPERATION_SUCCESSED;
-		} catch (Exception e) {
-			e.printStackTrace();
-			return ResultCode.OPERATION_FAILED;
 		}
+		return ResultCode.OPERATION_FAILED;
 	}
-
-	
+	/**
+	 * 获取场景列表
+	 * @param name 场景的名称
+	 * @param id 应用的id
+	 * @return
+	 */
+	public Object getIntentList(String name,Integer id) {
+		//TODO 优化
+		Map<String,Object> data = new HashMap<String,Object>();
+		List<Map<String,Object>> list = intentDao.getIntentList(name,id);
+		data.put("list", list);
+		return data;
+	}
+	/**
+	 * 获取场景明细
+	 * @param id 场景id
+	 * @return
+	 */
+	public Object getIntentDetail(Integer id) {
+		Map<String,Object> intent  = intentDao.getIntentById(id);
+		if(intent==null){
+			return ResultCode.INTENT_NOT_EXIST;
+		}
+		Map<String,Object> data = new HashMap<String,Object>();
+		String intentName = (String) intent.get("name");
+		List<Map<String,Object>> askList = intentDao.getAskListByIName(intentName);
+		for (Map<String, Object> map : askList) {
+			Integer aid =  (Integer) map.get("id");
+			List<Map<String,Object>> entityList = intentDao.getEntityListByAId(aid);
+			map.put("entitys", entityList);
+		}
+		List<Map<String,Object>> slot = intentDao.getActionListByIid(id);
+		intent.put("askList", askList);
+		intent.put("slotList", slot);
+		data.put("intent", intent);
+		return data;
+	}
 }

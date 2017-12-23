@@ -16,9 +16,19 @@ public class Intents extends BaseEntity implements Serializable {
 	private Integer appId;//应用id
 	private String name;
 	private Integer rank;// 等级
+	private String answer;//回复
 	private String actionName;
-	private List<RobotAction> action;// 动作
-	private List<Talk> talk;// 场景中的客户提问与robot的回答
+	private List<Slot> action;// 动作
+	private List<Ask> ask;// 场景中的客户提问与robot的回答
+
+	
+	public String getAnswer() {
+		return answer;
+	}
+
+	public void setAnswer(String answer) {
+		this.answer = answer;
+	}
 
 	public Integer getId() {
 		return id;
@@ -62,20 +72,22 @@ public class Intents extends BaseEntity implements Serializable {
 
 	
 
-	public List<RobotAction> getAction() {
+	public List<Slot> getAction() {
 		return action;
 	}
 
-	public void setAction(List<RobotAction> action) {
+	public void setAction(List<Slot> action) {
 		this.action = action;
 	}
 
-	public List<Talk> getTalk() {
-		return talk;
+	public List<Ask> getAsk() {
+		return ask;
 	}
 
-	public void setTalk(List<Talk> talk) {
-		this.talk = talk;
+	public void setAsk(List<Ask> ask) {
+		this.ask = ask;
 	}
+
+	
 
 }

@@ -10,6 +10,8 @@ import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.alibaba.fastjson.JSON;
+
+import jice.vigortech.chat.robot.common.util.CorsHandler;
 @Component
 public class LogInterceptor implements HandlerInterceptor  {
 
@@ -17,13 +19,14 @@ public class LogInterceptor implements HandlerInterceptor  {
 	public boolean preHandle(HttpServletRequest request,
 			HttpServletResponse response, Object handler) throws Exception {
 			logger.info("access url={}, params={}, queryString={}", request.getRequestURL(), JSON.toJSONString(request.getParameterMap()), request.getQueryString());
+			CorsHandler.addCorsMapping(response);
 			return true;
 	}
 
 	public void postHandle(HttpServletRequest request,
 			HttpServletResponse response, Object handler,
 			ModelAndView modelAndView) throws Exception {
-		
+		CorsHandler.addCorsMapping(response);
 	}
 	
 	public void afterCompletion(HttpServletRequest request,
@@ -34,6 +37,7 @@ public class LogInterceptor implements HandlerInterceptor  {
 		} else {
 			logger.info("process returned\n url={}, params={}, queryString={}", request.getRequestURL(), JSON.toJSONString(request.getParameterMap()), request.getQueryString());
 		}
+		CorsHandler.addCorsMapping(response);
 	}
 
 }

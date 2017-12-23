@@ -1,8 +1,5 @@
 package jice.vigortech.sys.intent;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -13,8 +10,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import jice.vigortech.chat.robot.common.constants.ResultCode;
 import jice.vigortech.chat.robot.modules.intents.dao.IntentDao;
 import jice.vigortech.chat.robot.modules.intents.entity.Intents;
-import jice.vigortech.chat.robot.modules.intents.entity.RobotAction;
-import jice.vigortech.chat.robot.modules.intents.entity.Talk;
+import jice.vigortech.chat.robot.modules.intents.entity.Slot;
 import jice.vigortech.chat.robot.modules.intents.service.IntentService;
 
 @SpringBootTest
@@ -27,31 +23,35 @@ public class IntentTest {
 	@Test
 	public void insertIntentTest(){
 		Intents itemp = new Intents();
-		RobotAction atemp = new RobotAction();
+		Slot atemp = new Slot();
 		atemp.setIntentId(itemp.getId());
 		atemp.setFlag(1);
-		atemp.setMesssage("adshfkjsdahf");
-		Talk ttemp = new Talk();
-		ttemp.setAnswer("haha");
-		ttemp.setAsk("xixi");
-		ttemp.setIntentsId(itemp.getId());
-		List<RobotAction> rlist = new ArrayList<RobotAction>();
-		rlist.add(atemp);
-		List<Talk> tlist = new ArrayList<Talk>();
-		tlist.add(ttemp);
-		itemp.setTalk(tlist);
-		itemp.setAction(rlist);
+		atemp.setMessage("adshfkjsdahf");
+		
 		itemp.setAppId(1);
 		itemp.setName("上课");
-		Assert.assertTrue(intentService.insertIntent(itemp, 1)==ResultCode.OPERATION_FAILED);
+		Assert.assertTrue(intentService.insertIntent(itemp, 1)==ResultCode.OPERATION_SUCCESSED);
 	}
 	
 	@Test
 	public void insertActionTest(){
-		RobotAction atemp = new RobotAction();
+		Slot atemp = new Slot();
 		atemp.setIntentId(1);
 		atemp.setFlag(1);
-		atemp.setMesssage("adshfkjsdahf");
-		intentDao.insertAction(atemp);
+		atemp.setMessage("adshfkjsdahf");
+		//intentDao.insertAction(atemp);
+		Assert.assertTrue(intentDao.insertAction(atemp)>=0);
 	}
+	
+	
+	@Test
+	public void getIntentList(){
+		System.out.println(intentDao.getIntentList("", 23));
+	}
+	
+	@Test
+	public void getIntentDetail(){
+		
+	}
+	
 }
