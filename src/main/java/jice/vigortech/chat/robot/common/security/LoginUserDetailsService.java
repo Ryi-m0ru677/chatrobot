@@ -33,7 +33,7 @@ public class LoginUserDetailsService implements UserDetailsService{
 	private List<GrantedAuthority> getAuthority(Integer id,String userRole){
 		List<GrantedAuthority> auths = new ArrayList<GrantedAuthority>();
 		List<String> authKeys = null;
-		if(userRole.equalsIgnoreCase("sys_user")){
+		if(userRole.equalsIgnoreCase("sys_admin")){
 			authKeys = userDao.getSuperAuthRole();
 		}else{
 			authKeys = userDao.getAuthRoleById(id);

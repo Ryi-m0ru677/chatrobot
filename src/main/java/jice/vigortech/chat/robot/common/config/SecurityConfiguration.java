@@ -3,6 +3,8 @@ package jice.vigortech.chat.robot.common.config;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
+import org.springframework.security.authentication.dao.SystemWideSaltSource;
+import org.springframework.security.authentication.encoding.Md5PasswordEncoder;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -46,8 +48,11 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 			.deleteCookies("JSESSIONID");
 		//TODO
 		http.authorizeRequests()
-			//.antMatchers(SysConstants.SYS_URL+"/login").hasAnyRole("SYS_USER")
-			.antMatchers(SysConstants.SYS_URL+"/login").hasRole("SYS_USER")
+			//越细的权限放在后面	
+			.antMatchers(SysConstants.SYS_URL+"/login").hasAnyRole("SYS_USER","SYS_ADMIN")
+			/*.antMatchers(SysConstants.SYS_URL+"/intent/**").hasRole(SysConstants.SYS_USE_INTENT)
+			.antMatchers(SysConstants.SYS_URL+"/dict/**").hasRole(SysConstants.SYS_USE_DICT)
+			.antMatchers(SysConstants.SYS_URL+"/app/**").hasRole(SysConstants.SYS_USE_APP)*/
 			;
 		
 		http.addFilterAfter(securityInterceptor, ExceptionTranslationFilter.class);
@@ -62,7 +67,12 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 	@Override
 	protected void configure(AuthenticationManagerBuilder auth) throws Exception {
 		DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider();
+		SystemWideSaltSource saltSource = new SystemWideSaltSource();
+		saltSource.setSystemWideSalt(SysConstants.PASSWORD_SALT);
+		authProvider.setSaltSource(saltSource);
+		
 		authProvider.setUserDetailsService(userDetailsService);
+		authProvider.setPasswordEncoder(new Md5PasswordEncoder());
 		auth.authenticationProvider(authProvider);
 	}
 }

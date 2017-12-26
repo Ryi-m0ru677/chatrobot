@@ -68,8 +68,12 @@ public class AppService {
 	public ResultCode addApp(Application app) {
 		if (app.getId() == null) {
 			// 新增
-			System.out.println(app.getId());
 			try {
+				/*User user = SecurityUtils.getCurrentUser();
+				if(user==null){
+					return ResultCode.OPERATION_NOT_PERMITTED;
+				}
+				app.setCreateBy(user.getId());*/
 				appDao.insertApp(app);
 				return ResultCode.OPERATION_SUCCESSED;
 			} catch (Exception e) {
@@ -77,7 +81,6 @@ public class AppService {
 			}
 		} else {
 			// 修改
-			System.out.println(app.getId());
 			try {
 				appDao.updateApp(app);
 				return ResultCode.OPERATION_SUCCESSED;
@@ -94,9 +97,18 @@ public class AppService {
 	 * 
 	 * @return appList
 	 */
-	public Map<String, Object> getAppList(String name) {
+	public Object getAppList(String name) {
+		String sql = null;
+		//TODO 权限的校验
+		/*User user = SecurityUtils.getCurrentUser();
+		if(user==null){
+			return ResultCode.OPERATION_NOT_PERMITTED;
+		}
+		if(user.getRole().equalsIgnoreCase(SysConstants.SYS_USER)){
+			sql = String.format(SysConstants.SYS_SQL, user.getId());
+		}*/
 		Map<String, Object> data = new HashMap<String, Object>();
-		List<Map<String, Object>> list = appDao.getAllAppList(name);
+		List<Map<String, Object>> list = appDao.getAllAppList(name,sql);
 		// 总数，余数
 		data.put("list", list);
 		return data;

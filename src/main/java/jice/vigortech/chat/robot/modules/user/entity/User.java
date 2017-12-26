@@ -2,20 +2,17 @@ package jice.vigortech.chat.robot.modules.user.entity;
 
 import java.io.Serializable;
 
-public class User implements Serializable  {
+public class User implements Serializable {
 
 	/**
-	 * 
+	 * 用户
 	 */
 	private static final long serialVersionUID = 1L;
 	private Integer id;
 	private String name;
-	private String loginName;
 	private String password;
 	private String phone;
-	private Integer gender;
 	private String email;
-	private String address;
 	private String role;
 	private Integer roleGroupId;
 
@@ -35,14 +32,6 @@ public class User implements Serializable  {
 		this.name = name;
 	}
 
-	public String getLoginName() {
-		return loginName;
-	}
-
-	public void setLoginName(String loginName) {
-		this.loginName = loginName;
-	}
-
 	public String getPassword() {
 		return password;
 	}
@@ -59,28 +48,12 @@ public class User implements Serializable  {
 		this.phone = phone;
 	}
 
-	public Integer getGender() {
-		return gender;
-	}
-
-	public void setGender(Integer gender) {
-		this.gender = gender;
-	}
-
 	public String getEmail() {
 		return email;
 	}
 
 	public void setEmail(String email) {
 		this.email = email;
-	}
-
-	public String getAddress() {
-		return address;
-	}
-
-	public void setAddress(String address) {
-		this.address = address;
 	}
 
 	public String getRole() {

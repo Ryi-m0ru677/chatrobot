@@ -16,7 +16,7 @@ import jice.vigortech.chat.robot.modules.intents.entity.Intents;
 import jice.vigortech.chat.robot.modules.intents.service.IntentService;
 
 @RestController
-@RequestMapping(path=SysConstants.SYS_URL+"/intent",method={RequestMethod.GET})
+@RequestMapping(path=SysConstants.SYS_URL+"/intent",method={RequestMethod.POST})
 public class IntentController extends BaseController{
 	
 	@Autowired

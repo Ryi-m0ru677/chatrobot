@@ -19,6 +19,7 @@ import org.springframework.web.filter.GenericFilterBean;
 
 import jice.vigortech.chat.robot.common.constants.ResultCode;
 import jice.vigortech.chat.robot.common.model.web.BaseController;
+import jice.vigortech.chat.robot.common.util.CorsHandler;
 
 @Component
 public class SecurityInterceptor extends GenericFilterBean implements AccessDeniedHandler{
@@ -47,7 +48,7 @@ public class SecurityInterceptor extends GenericFilterBean implements AccessDeni
         	} else {
         		retCode = ResultCode.OPERATION_NOT_PERMITTED;
         	}
-    		/*CorsHandler.addCorsMapping((HttpServletResponse) response);*/
+    		CorsHandler.addCorsMapping((HttpServletResponse) response);
     		BaseController.writeResponse((HttpServletResponse) response, retCode);
         }
 		

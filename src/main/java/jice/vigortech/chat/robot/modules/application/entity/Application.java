@@ -26,6 +26,7 @@ public class Application extends BaseEntity implements Serializable {
 	private String storage;//存储方式
 	
 	
+	
 
 	public Application getApp(String name, Integer isPrivate, String defaultReply) {
 		Application app = new Application();
@@ -125,4 +126,6 @@ public class Application extends BaseEntity implements Serializable {
 		this.storage = storage;
 	}
 
+
+	
 }

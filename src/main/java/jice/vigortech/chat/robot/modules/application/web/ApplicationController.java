@@ -15,7 +15,7 @@ import jice.vigortech.chat.robot.modules.application.entity.Application;
 import jice.vigortech.chat.robot.modules.application.service.AppService;
 
 @RestController
-@RequestMapping(path = SysConstants.SYS_URL+"/app",method={RequestMethod.GET})
+@RequestMapping(path = SysConstants.SYS_URL+"/app",method={RequestMethod.POST})
 public class ApplicationController extends BaseController{
 	/**
 	 * 获取应用列表
@@ -27,6 +27,10 @@ public class ApplicationController extends BaseController{
 	public String getAppList(/*PageQuery query,*/@RequestParam("name") String name){
 		//TODO加上user当参数做数据权限
 		data=appService.getAppList(name);
+		if(data instanceof ResultCode){
+			resCode = (ResultCode) data;
+			data=null;
+		}
 		resCode = ResultCode.OPERATION_SUCCESSED;
 		return Result();
 	}

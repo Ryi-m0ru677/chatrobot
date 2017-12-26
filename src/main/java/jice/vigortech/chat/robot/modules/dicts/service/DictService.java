@@ -69,9 +69,11 @@ public class DictService {
 			//添加
 			try {
 				if(dictDao.insertDict(dict)>0){
-					for (Synonymy syn : dict.getWord()) {
-						syn.setDictId(dict.getId());
-						dictDao.insertDictWord(syn);
+					if(dict.getWord()!=null){
+						for (Synonymy syn : dict.getWord()) {
+							syn.setDictId(dict.getId());
+							dictDao.insertDictWord(syn);
+						}
 					}
 				}
 				return ResultCode.OPERATION_SUCCESSED;
@@ -86,9 +88,11 @@ public class DictService {
 			}
 			try {
 				if(dictDao.updateDict(dict)>0){
-					for (Synonymy syn : dict.getWord()) {
-						syn.setDictId(dict.getId());
-						dictDao.updateDictWord(syn);
+					if(dict.getWord()!=null){
+						for (Synonymy syn : dict.getWord()) {
+							syn.setDictId(dict.getId());
+							dictDao.updateDictWord(syn);
+						}
 					}
 				}	
 				return ResultCode.OPERATION_SUCCESSED;

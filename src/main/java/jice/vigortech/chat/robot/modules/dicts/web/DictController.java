@@ -14,7 +14,7 @@ import jice.vigortech.chat.robot.common.model.web.BaseController;
 import jice.vigortech.chat.robot.modules.dicts.entity.Dicts;
 import jice.vigortech.chat.robot.modules.dicts.service.DictService;
 @RestController
-@RequestMapping(path=SysConstants.SYS_URL+"/dict", method={RequestMethod.GET})
+@RequestMapping(path=SysConstants.SYS_URL+"/dict", method={RequestMethod.POST})
 public class DictController extends BaseController{
 
 	@Autowired

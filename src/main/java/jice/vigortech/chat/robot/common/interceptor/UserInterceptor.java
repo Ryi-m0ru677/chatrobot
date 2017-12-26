@@ -18,7 +18,7 @@ public class UserInterceptor  extends BaseController implements HandlerIntercept
 	public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
 		HttpSession session = request.getSession();
 		Long now = System.currentTimeMillis();
-		if(session == null/* || session.getAttribute("username") == null */|| (now - session.getLastAccessedTime()) > 7200000) {
+		if(session == null || session.getAttribute("username") == null || (now - session.getLastAccessedTime()) > 7200000) {
 			resCode = ResultCode.SESSION_INVALID;
 			data = null;
 			response.setCharacterEncoding("utf-8");

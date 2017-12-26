@@ -33,14 +33,14 @@ public interface AppDao {
 
 	@Select("<script>"
 			+ "select id id, name `name`,update_date "
-			+ "from robot_app where del_flag=0 "
+			+ "from robot_app where del_flag=0 ${sql} "
 			+ "<if test=\"name != null and name != ''\">"
 			+ "and name like concat('%', #{name}, '%') "
 			+ "</if> "
 			+ "order by update_date "
 			+ "</script>"
 			)
-	List<Map<String, Object>> getAllAppList(@Param("name") String name);
+	List<Map<String, Object>> getAllAppList(@Param("name") String name,@Param("sql") String sql);
 	
 	@Update("update robot_app set del_flag=1 where id = ${id}")
 	Integer deleteApp(@Param("id")Integer id);

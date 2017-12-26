@@ -6,6 +6,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.DisabledException;
 import org.springframework.security.core.Authentication;
@@ -15,13 +16,34 @@ import org.springframework.security.web.authentication.AuthenticationFailureHand
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.security.web.authentication.logout.LogoutSuccessHandler;
 import org.springframework.stereotype.Controller;
+import org.springframework.util.StringUtils;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import jice.vigortech.chat.robot.common.constants.ResultCode;
 import jice.vigortech.chat.robot.common.model.web.BaseController;
 import jice.vigortech.chat.robot.common.util.CorsHandler;
+import jice.vigortech.chat.robot.modules.user.service.UserService;
 
 @Controller
 public class LoginController extends BaseController implements LogoutSuccessHandler,AuthenticationSuccessHandler,AuthenticationFailureHandler {
+	
+	@Autowired
+	UserService userService;
+	
+	@RequestMapping("/chg-passwd")
+	public String chgPasswd(@RequestParam("password") String password, @RequestParam("newPassword") String newPassword) {
+		if(StringUtils.isEmpty(password) || StringUtils.isEmpty(newPassword)) {
+			resCode = ResultCode.USER_PASSWORD_EMPTY;
+		} else if(password.equals(newPassword)) {
+			resCode = ResultCode.USER_PASSWORD_NEW_SAMEWITH_OLD;
+		} else {
+			resCode = userService.chgPasswd(password, newPassword);
+		}
+		data = null;
+		return Result();
+	}
+	
 	/**
 	 * 验证失败调用
 	 */

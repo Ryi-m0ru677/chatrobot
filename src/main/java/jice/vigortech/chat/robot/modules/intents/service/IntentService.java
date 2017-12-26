@@ -42,25 +42,28 @@ public class IntentService {
 					return ResultCode.INTENT_HAS_EXIST;
 				}
 				if(intentDao.insertIntent(intent)>0){
-					for (Ask ask : intent.getAsk()) {
-						ask.setIntent(intent.getName());
-						//String text = ask.getText();
-						if(intentDao.insertAsk(ask)>0){
-							for(Entity entity:ask.getEntity()){
-								entity.setAskId(ask.getId());
-								/*
-								String value = entity.getValue();
-								int start = text.indexOf(value);
-								int end = start+value.length();
-								entity.setStart(start);
-								entity.setEnd(end);*/
-								intentDao.insertEntity(entity);
+					if(intent.getAsk()!=null){
+						for (Ask ask : intent.getAsk()) {
+							ask.setIntent(intent.getName());
+							String text = ask.getText();
+							if(intentDao.insertAsk(ask)>0){
+								for(Entity entity:ask.getEntity()){
+									entity.setAskId(ask.getId());
+									String value = entity.getValue();
+									int start = text.indexOf(value);
+									int end = start+value.length();
+									entity.setStart(start);
+									entity.setEnd(end);
+									intentDao.insertEntity(entity);
+								}
 							}
 						}
 					}
-					for(Slot Slot :intent.getAction()){
-						Slot.setIntentId(intent.getId());
-						intentDao.insertAction(Slot);
+					if(intent.getAction()!=null){
+						for(Slot Slot :intent.getAction()){
+							Slot.setIntentId(intent.getId());
+							intentDao.insertAction(Slot);
+						}
 					}
 				}
 				return ResultCode.OPERATION_SUCCESSED;
@@ -75,14 +78,18 @@ public class IntentService {
 			return ResultCode.INTENT_NOT_EXIST;
 		}
 		if(intentDao.updateIntent(intent)>=0 ){
-			for (Ask ask : intent.getAsk()) {
-				intentDao.updateAsk(ask);
-				for(Entity entity:ask.getEntity()){
-					intentDao.updateEntity(entity);
+			if(intent.getAsk()!=null){
+				for (Ask ask : intent.getAsk()) {
+					intentDao.updateAsk(ask);
+					for(Entity entity:ask.getEntity()){
+						intentDao.updateEntity(entity);
+					}
 				}
 			}
-			for(Slot action :intent.getAction()){
-				intentDao.updateAction(action);
+			if(intent.getAction()!=null){
+				for(Slot action :intent.getAction()){
+					intentDao.updateAction(action);
+				}
 			}
 			return intent.getId();
 		}

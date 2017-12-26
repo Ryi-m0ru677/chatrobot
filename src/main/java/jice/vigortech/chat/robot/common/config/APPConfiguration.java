@@ -34,7 +34,15 @@ public class APPConfiguration extends WebMvcConfigurerAdapter{
 	 */
 	@Override
 	public void addCorsMappings(CorsRegistry registry) {
+		if(SysConstants.SERVER_ALLOW_CORSDOMAIN) {
+			registry.addMapping(SysConstants.SYS_URL + "/**")
+				.allowedOrigins(SysConstants.SERVER_CORSDOMAIN)
+				.allowedMethods("POST", "GET")
+				.allowCredentials(true)
+				.allowedHeaders("X-Requested-With, Origin, Content-Type")
+				.maxAge(3600);
 		super.addCorsMappings(registry);
+		}
 	}
 	
 }
