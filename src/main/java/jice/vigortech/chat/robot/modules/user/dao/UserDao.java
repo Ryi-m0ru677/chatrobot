@@ -1,6 +1,7 @@
 package jice.vigortech.chat.robot.modules.user.dao;
 
 import java.util.List;
+import java.util.Map;
 
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
@@ -11,7 +12,7 @@ import org.apache.ibatis.annotations.Update;
 import jice.vigortech.chat.robot.modules.user.entity.User;
 @Mapper
 public interface UserDao {
-	@Select("select name name, password password, role role, id id "
+	@Select("select `name` name, `password` password, role role, id id "
 			+ "from sys_user where del_flag=0 "
 			+ "and name=#{name} "
 			)
@@ -35,14 +36,29 @@ public interface UserDao {
 			+ "order by sort ")
 	List<String> getSuperAuthRole();
 	
-	@Insert("insert sys_user into(name,password,phone,email,role )"
-			+ "values(#{name},#{password},#{phone},#{email},#{role})")
+	@Insert("insert into sys_user(`name`,`password`,phone,email,role,create_date,update_date ) "
+			+ "values(#{name},#{password},#{phone},#{email},#{role},#{createDateString},#{updateDateString})")
 	int insertUser(User user);
 	
-	@Update("update sys_user set name=#{name},password=#{password},phone=#{phone},"
-			+ "email=#{email}")
+	@Update("update sys_user set name=#{name},password=#{password},phone=#{phone},update_date=#{updateDateString} "
+			+ "email=#{email} where id = #{id}")
 	int updateUser(User user);
 	
-	@Update("update sys_user set password=#{password}")
-	int chgPasswd(@Param("password")String newPassword);
+	@Update("update sys_user set password=#{password} where id=${id}")
+	int chgPasswd(@Param("password")String newPassword,@Param("id") Integer id);
+	
+	@Select("select id ,`name`,phone,email,role,update_date updateDate, create_date createDate from sys_user where del_flag=0 and id=${id}")
+	Map<String,Object> getUserById(@Param("id")Integer id);
+	
+	@Update("update sys_user set del_flag=1 where id=${id}")
+	int deleteUserById(@Param("id")Integer id);
+	
+	@Select("<script>"
+			+ "select id, name,phone,email,update_date updateDate, create_date createDate from sys_user where del_flag=0 "
+			+ "<if test=\"name!=null and name!=''\">"
+			+ "and name like concat('%',#{name},'%') "
+			+ "</if>"
+			+ "order by id"
+			+ "</script>")
+	List<Map<String, Object>> getUserList(@Param("name")String name);
 }

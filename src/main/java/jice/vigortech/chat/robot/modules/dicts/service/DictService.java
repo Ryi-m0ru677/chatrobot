@@ -14,6 +14,7 @@ import jice.vigortech.chat.robot.modules.dicts.entity.Dicts;
 import jice.vigortech.chat.robot.modules.dicts.entity.Synonymy;
 
 @Service
+@Transactional(readOnly=true)
 public class DictService {
 
 	@Autowired

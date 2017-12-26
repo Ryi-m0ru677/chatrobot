@@ -2,7 +2,9 @@ package jice.vigortech.chat.robot.modules.user.entity;
 
 import java.io.Serializable;
 
-public class User implements Serializable {
+import jice.vigortech.chat.robot.common.model.entity.BaseEntity;
+
+public class User extends BaseEntity implements Serializable {
 
 	/**
 	 * 用户

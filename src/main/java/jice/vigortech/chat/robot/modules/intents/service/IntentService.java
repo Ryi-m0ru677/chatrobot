@@ -17,6 +17,7 @@ import jice.vigortech.chat.robot.modules.intents.entity.Intents;
 import jice.vigortech.chat.robot.modules.intents.entity.Slot;
 
 @Service
+@Transactional(readOnly=true)
 public class IntentService {
 	@Autowired
 	AppDao appDao;
