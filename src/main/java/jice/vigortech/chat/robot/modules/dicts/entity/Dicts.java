@@ -14,19 +14,20 @@ public class Dicts extends BaseEntity implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	private Integer id;
-	private Integer appId;//应用的id
+	private Integer appId;// 应用的id
 	private String name;
 	protected String pinyin;
 	private Integer synonymyFlag;// 是否有同义词
-	private List<Synonymy> word;// 同义词
+	private List<Synonymy> wordList;// 同义词
 
 	public Integer getSynonymyFlag() {
 		return synonymyFlag;
 	}
-	
+
 	public void setSynonymyFlag(Integer synonymyFlag) {
 		this.synonymyFlag = synonymyFlag;
 	}
+
 	public Integer getId() {
 		return id;
 	}
@@ -34,8 +35,6 @@ public class Dicts extends BaseEntity implements Serializable {
 	public void setId(Integer id) {
 		this.id = id;
 	}
-
-	
 
 	public Integer getAppId() {
 		return appId;
@@ -53,12 +52,12 @@ public class Dicts extends BaseEntity implements Serializable {
 		this.name = name;
 	}
 
-	public List<Synonymy> getWord() {
-		return word;
+	public List<Synonymy> getWordList() {
+		return wordList;
 	}
 
-	public void setWord(List<Synonymy> word) {
-		this.word = word;
+	public void setWordList(List<Synonymy> wordList) {
+		this.wordList = wordList;
 	}
 
 	public String getPinyin() {

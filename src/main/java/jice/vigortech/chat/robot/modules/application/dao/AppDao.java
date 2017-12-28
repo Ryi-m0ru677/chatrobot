@@ -63,4 +63,10 @@ public interface AppDao {
 			+ "where id=#{app.id}")
 	Integer updateApp(@Param("app")Application app);
 	
+	@Select("SELECT a.text, a.intent, b.`start`, b.`end`, b.entity, b.`value` "
+			+ "FROM robot_scene_ask a JOIN robot_scene_ask_entitys b ON b.ask_id = a.id "
+			+ "WHERE a.del_flag = 0 AND b.del_flag = 0 AND a.id IN "
+			+ "( SELECT id FROM robot_scene WHERE del_flag = 0 AND app_id = ${id} ) ")
+	List<Map<String,Object>> getAppSlot(@Param("id")Integer id);
+	
 }

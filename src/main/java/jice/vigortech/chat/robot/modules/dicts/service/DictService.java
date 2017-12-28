@@ -70,8 +70,8 @@ public class DictService {
 			//添加
 			try {
 				if(dictDao.insertDict(dict)>0){
-					if(dict.getWord()!=null){
-						for (Synonymy syn : dict.getWord()) {
+					if(dict.getWordList()!=null){
+						for (Synonymy syn : dict.getWordList()) {
 							syn.setDictId(dict.getId());
 							dictDao.insertDictWord(syn);
 						}
@@ -89,10 +89,14 @@ public class DictService {
 			}
 			try {
 				if(dictDao.updateDict(dict)>0){
-					if(dict.getWord()!=null){
-						for (Synonymy syn : dict.getWord()) {
+					if(dict.getWordList()!=null){
+						for (Synonymy syn : dict.getWordList()) {
 							syn.setDictId(dict.getId());
-							dictDao.updateDictWord(syn);
+							if(syn.getId()!=null){
+								dictDao.updateDictWord(syn);
+							}else{
+								dictDao.insertDictWord(syn);
+							}
 						}
 					}
 				}	

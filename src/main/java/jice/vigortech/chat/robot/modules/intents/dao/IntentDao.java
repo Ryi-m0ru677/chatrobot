@@ -7,6 +7,7 @@ import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.SelectKey;
 import org.apache.ibatis.annotations.Update;
 
 import jice.vigortech.chat.robot.modules.intents.entity.Ask;
@@ -19,16 +20,18 @@ public interface IntentDao {
 	//添加场景
 	@Insert("insert into robot_scene "
 			+ "("
-			+ "app_id, name, rank,answer, act_name, create_by, create_date,update_date) "
-			+ "values(#{appId}, #{name}, #{rank},#{answer}, #{actionName}, #{createBy}, "
+			+ "app_id, name, rank,answer, act_name,  create_date,update_date) "
+			+ "values(#{appId}, #{name}, #{rank},#{answer}, #{actionName}, "
 			+ "#{createDateString},#{updateDateString}) "
 			)
+	@SelectKey(before = false, keyProperty = "id", resultType = Integer.class, statement = { "select last_insert_id()" })
 	Integer insertIntent(Intents intent);
 	@Insert("insert into robot_scene_ask( "
 			+ "text,intent) "
 			+ "values( "
 			+ "#{text},#{intent})"
 			)
+	@SelectKey(before = false, keyProperty = "id", resultType = Integer.class, statement = { "select last_insert_id()" })
 	int insertAsk(Ask ask);
 	@Insert("insert into robot_scene_ask_entitys ("
 			+ "ask_id,start,end,value,entity) "
@@ -93,7 +96,7 @@ public interface IntentDao {
 	
 	@Select("select id id ,text text,intent intent from robot_scene_ask where intent=#{name} and del_flag=0")
 	List<Map<String, Object>> getAskListByIName(@Param("name") String name);
-	@Select("select `start` ,`end`,`value`,entity from robot_scene_ask_entitys where del_flag=0 "
+	@Select("select id, `start` ,`end`,`value`,entity from robot_scene_ask_entitys where del_flag=0 "
 			+ "and ask_id=${id} order by id")
 	List<Map<String, Object>> getEntityListByAId(@Param("id")Integer id);
 	

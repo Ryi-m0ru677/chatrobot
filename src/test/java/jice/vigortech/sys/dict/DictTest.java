@@ -25,17 +25,18 @@ public class DictTest {
 		Dicts dict = new Dicts();
 		dict.setAppId(23);
 		dict.setSynonymyFlag(1);
-		dict.setName("跑鞋12");
+		dict.setName("特价");
 		
 		
 		if(dictDao.insertDict(dict)>0){
 			Synonymy synon = new Synonymy();
 			synon.setDictId(dict.getId());
-			synon.setKeyword("跑12");
-			synon.setSynonymy("跑步12");
+			synon.setKeyword("8折");
+			synon.setSynonymy("8折");
 			
 			dictDao.insertDictWord(synon);
 		}
+			
 		System.out.println(dictDao.getDicList("", 23));
 	}
 }

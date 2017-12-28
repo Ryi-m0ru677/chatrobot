@@ -34,7 +34,7 @@ public class DictController extends BaseController{
 	}
 	
 	@RequestMapping("/add")
-	public String addDict(@Validated Dicts dict, @RequestParam("appId") Integer appId,BindingResult result){
+	public String addDict(@Validated  Dicts dict, @RequestParam("appId") Integer appId,BindingResult result){
 		if(result.hasErrors()){
 			setErrorResultCode(result);
 		}else{
