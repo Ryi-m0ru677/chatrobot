@@ -24,7 +24,7 @@ public class LoginUserDetailsService implements UserDetailsService{
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 		jice.vigortech.chat.robot.modules.user.entity.User user = userDao.getUserByUserName(username);
 		if(user != null){
-			return new User(user.getName(),user.getPassword(),true, true,true,true,getAuthority(user.getId(),user.getRole()));
+			return new User(user.getUsername(),user.getPassword(),true, true,true,true,getAuthority(user.getId(),user.getRole()));
 		}else{
 			throw new UsernameNotFoundException(username);
 		}

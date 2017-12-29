@@ -62,7 +62,6 @@ public class LoginController extends BaseController implements LogoutSuccessHand
 			resCode = ResultCode.OPERATION_FAILED;
 		}
 		data = null;
-		data = userService.getUserTokenByUserName("zhangsan");
 		CorsHandler.addCorsMapping(response);
 		writeResponse(response);
 	}

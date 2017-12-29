@@ -13,12 +13,12 @@ import org.apache.ibatis.annotations.Update;
 import jice.vigortech.chat.robot.modules.user.entity.User;
 @Mapper
 public interface UserDao {
-	@Select("select `name` name, `password` password, role role, id id "
+	@Select("select `name` username, `password` password, role role, id id "
 			+ "from sys_user where del_flag=0 "
 			+ "and name=#{name} "
 			)
 	User getUserByUserName(@Param("name")String username);
-	@Select("select name name, password password, role role, id id "
+	@Select("select name username, password password, role role, id id "
 			+ "from sys_user where del_flag=0 "
 			//+ "and login_name=#{name} "
 			)
@@ -41,7 +41,7 @@ public interface UserDao {
 	Map<String, Object> getTokenByUserName(@Param("name")String name);
 	
 	@Insert("insert into sys_user(`name`,`password`,phone,email,role,create_date,update_date ) "
-			+ "values(#{name},#{password},#{phone},#{email},#{role},#{createDateString},#{updateDateString})")
+			+ "values(#{username},#{password},#{phone},#{email},#{role},#{createDateString},#{updateDateString})")
 	@SelectKey(before = false, keyProperty = "id", resultType = Integer.class, statement = { "select last_insert_id()" })
 	int insertUser(User user);
 	
@@ -49,21 +49,21 @@ public interface UserDao {
 			+ "values(#{id},#{name},#{token},#{time})")
 	int insertUserConfig(Map<String, Object> userConfig);
 	
-	@Update("update sys_user set name=#{name},password=#{password},phone=#{phone},update_date=#{updateDateString} "
+	@Update("update sys_user set name=#{username},password=#{password},phone=#{phone},update_date=#{updateDateString} "
 			+ "email=#{email} where id = #{id}")
 	int updateUser(User user);
 	
 	@Update("update sys_user set password=#{password} where id=${id}")
 	int chgPasswd(@Param("password")String newPassword,@Param("id") Integer id);
 	
-	@Select("select id ,`name`,phone,email,role,update_date updateDate, create_date createDate from sys_user where del_flag=0 and id=${id}")
+	@Select("select id ,`name` username,phone,email,role,update_date updateDate, create_date createDate from sys_user where del_flag=0 and id=${id}")
 	Map<String,Object> getUserById(@Param("id")Integer id);
 	
 	@Update("update sys_user set del_flag=1 where id=${id}")
 	int deleteUserById(@Param("id")Integer id);
 	
 	@Select("<script>"
-			+ "select id, name,phone,email,update_date updateDate, create_date createDate from sys_user where del_flag=0 "
+			+ "select id, name username,phone,email,update_date updateDate, create_date createDate from sys_user where del_flag=0 "
 			+ "<if test=\"name!=null and name!=''\">"
 			+ "and name like concat('%',#{name},'%') "
 			+ "</if>"

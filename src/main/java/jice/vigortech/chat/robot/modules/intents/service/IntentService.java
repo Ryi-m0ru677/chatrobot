@@ -43,33 +43,9 @@ public class IntentService {
 					return ResultCode.INTENT_HAS_EXIST;
 				}
 				if(intentDao.insertIntent(intent)>0){
-					if(intent.getAskList()!=null){
-						for (Ask ask : intent.getAskList()) {
-							ask.setIntent(intent.getName());
-							String text = ask.getText();
-							if(intentDao.insertAsk(ask)>0){
-								if(ask.getEntitys()!=null){
-									for(Entity entity:ask.getEntitys()){
-										entity.setAskId(ask.getId());
-										String value = entity.getValue();
-										int start = text.indexOf(value);
-										int end = start+value.length();
-										entity.setStart(start);
-										entity.setEnd(end);
-										intentDao.insertEntity(entity);
-									}
-								}
-							}
-						}
-					}
-					if(intent.getSlotList()!=null){
-						for(Slot Slot :intent.getSlotList()){
-							Slot.setIntentId(intent.getId());
-							intentDao.insertAction(Slot);
-						}
-					}
+					insertIntent(intent);
+					return ResultCode.OPERATION_SUCCESSED;
 				}
-				return ResultCode.OPERATION_SUCCESSED;
 			} catch (Exception e) {
 				e.printStackTrace();
 				return ResultCode.OPERATION_FAILED;
@@ -82,66 +58,9 @@ public class IntentService {
 		}
 		if(intentDao.updateIntent(intent)>=0 ){
 			//修改或添加ask
-			if(intent.getAskList()!=null){
-				for (Ask ask : intent.getAskList()) {
-					//添加
-					ask.setIntent((String)intentDao.getIntentById(intent.getId()).get("name"));
-					if(ask.getId()==null){
-						String text = ask.getText();
-						if(intentDao.insertAsk(ask)>0){
-							
-							intentDao.deleteEntityListByAId(ask.getId());
-							if(ask.getEntitys()!=null){
-								/*for(Entity entity:ask.getEntitys()){
-									//entity.getId();
-									if(entity.getId()==null){
-										entity.setAskId(ask.getId());
-										String value = entity.getValue();
-										int start = text.indexOf(value);
-										int end = start+value.length();
-										entity.setStart(start);
-										entity.setEnd(end);
-										intentDao.insertEntity(entity);
-									}else{
-										intentDao.updateEntity(entity);
-									}
-								}*/
-								for(Entity entity:ask.getEntitys()){
-									entity.setAskId(ask.getId());
-									String value = entity.getValue();
-									int start = text.indexOf(value);
-									int end = start+value.length();
-									entity.setStart(start);
-									entity.setEnd(end);
-									intentDao.insertEntity(entity);
-								}
-								
-							}
-						}
-					}else{
-						//修改
-						intentDao.updateAsk(ask);
-						if(ask.getEntitys()!=null){
-							for(Entity entity:ask.getEntitys()){
-								intentDao.updateEntity(entity);
-							}
-						}
-					}
-				}
-			}
-			//添加或修改slot
-			if(intent.getSlotList()!=null){
-				for(Slot slot :intent.getSlotList()){
-					
-					if(slot.getId()==null){
-						//添加
-						slot.setIntentId(intent.getId());
-						intentDao.insertAction(slot);
-					}
-					//修改
-					intentDao.updateAction(slot);
-				}
-			}
+			Map<String,Object> temp  = intentDao.getIntentById(intent.getId());
+			deleteAskAndSlot(temp,intent.getId());
+			insertIntent(intent);
 			return ResultCode.OPERATION_SUCCESSED;
 		}
 		return ResultCode.OPERATION_FAILED;
@@ -160,14 +79,7 @@ public class IntentService {
 			return ResultCode.INTENT_NOT_EXIST;
 		}
 		if(intentDao.deleteIntent(id)>0){
-			String iname = (String) intent.get("name");
-			List<Map<String,Object>> askList = intentDao.getAskListByIName(iname);
-			for (Map<String, Object> map : askList) {
-				Integer aid =  (Integer) map.get("id");
-				intentDao.deleteEntityListByAId(aid);
-			}
-			intentDao.deleteAskByName(iname);
-			intentDao.deleteSlot(id);
+			deleteAskAndSlot(intent,id);
 			return ResultCode.OPERATION_SUCCESSED;
 		}
 		return ResultCode.OPERATION_FAILED;
@@ -208,5 +120,46 @@ public class IntentService {
 		intent.put("slotList", slot);
 		data.put("intent", intent);
 		return data;
+	}
+	
+	private void insertIntent(Intents intent){
+		
+		if(intent.getAskList()!=null){
+			for (Ask ask : intent.getAskList()) {
+				ask.setIntent(intent.getName());
+				String text = ask.getText();
+				if(intentDao.insertAsk(ask)>0){
+					if(ask.getEntitys()!=null){
+						for(Entity entity:ask.getEntitys()){
+							entity.setAskId(ask.getId());
+							String value = entity.getValue();
+							int start = text.indexOf(value);
+							int end = start+value.length();
+							entity.setStart(start);
+							entity.setEnd(end);
+							intentDao.insertEntity(entity);
+						}
+					}
+				}
+			}
+		}
+		if(intent.getSlotList()!=null){
+			for(Slot Slot :intent.getSlotList()){
+				Slot.setIntentId(intent.getId());
+				intentDao.insertAction(Slot);
+			}
+		}
+	}
+	
+	
+	private void deleteAskAndSlot(Map<String,Object> intent,Integer id){
+		String iname = (String) intent.get("name");
+		List<Map<String,Object>> askList = intentDao.getAskListByIName(iname);
+		for (Map<String, Object> map : askList) {
+			Integer aid =  (Integer) map.get("id");
+			intentDao.deleteEntityListByAId(aid);
+		}
+		intentDao.deleteAskByName(iname);
+		intentDao.deleteSlot(id);
 	}
 }

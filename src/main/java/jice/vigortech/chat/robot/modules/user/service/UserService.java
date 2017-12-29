@@ -41,9 +41,9 @@ public class UserService{
 				user.setPassword(password);
 				if(userDao.insertUser(user)>0){
 					Map<String,Object> userConfig = new HashMap<String,Object>();
-					String token = AESUtil.encrypt(user.getName(), SysConstants.SYS_TOKEN_SALT);
+					String token = AESUtil.encrypt(user.getUsername(), SysConstants.SYS_TOKEN_SALT);
 					userConfig.put("id", user.getId());
-					userConfig.put("name", user.getName());
+					userConfig.put("name", user.getUsername());
 					userConfig.put("token", token);
 					userConfig.put("time", "30");
 					userDao.insertUserConfig(userConfig);
@@ -104,9 +104,9 @@ public class UserService{
 	}
 	
 	public Object getUserTokenByUserName(String username) {
-		Map<String,Object> data = new HashMap<String,Object>();
+		
 		Map<String,Object> token = userDao.getTokenByUserName(username);
-		data.put("token", token);
-		return data;
+		
+		return token;
 	}
 }

@@ -34,7 +34,7 @@ public class UserTest {
 		user.setEmail("sdfsa");
 		user.setPhone("23154416sdfa");
 		user.setPassword("123456");
-		user.setName("王五");
+		user.setUsername("王五");
 		userDao.insertUser(user);
 	}
 	
@@ -44,7 +44,7 @@ public class UserTest {
 		user.setEmail("sdfsa");
 		user.setPhone("23154416sdfa");
 		user.setPassword("123456");
-		user.setName("王五");
+		user.setUsername("王五");
 		userService.addUser(user);
 	}
 	
@@ -69,5 +69,11 @@ public class UserTest {
 		System.out.println(userDao.getTokenByUserName("zhangsan"));
 	}
 	
-	
+	@Test
+	public void testGetUserByName(){
+		User user = userDao.getUserByUserName("admin");
+		System.out.println(user.getUsername());
+		
+		
+	}
 }

@@ -89,14 +89,11 @@ public class DictService {
 			}
 			try {
 				if(dictDao.updateDict(dict)>0){
+					dictDao.deleteWord(dict.getId());
 					if(dict.getWordList()!=null){
 						for (Synonymy syn : dict.getWordList()) {
 							syn.setDictId(dict.getId());
-							if(syn.getId()!=null){
-								dictDao.updateDictWord(syn);
-							}else{
-								dictDao.insertDictWord(syn);
-							}
+							dictDao.insertDictWord(syn);
 						}
 					}
 				}	
