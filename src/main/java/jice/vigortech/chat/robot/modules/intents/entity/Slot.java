@@ -13,7 +13,7 @@ public class Slot implements Serializable{
 	private Integer intentId;
 	private Integer flag;//是否必须
 	private String typeName;//参数名称
-	private String type;//参数类型--词库中取
+	private String dictName;//参数类型--词库中取
 	private String message;//提示语
 	private String defValue;//默认值
 	private Integer delFlag;
@@ -50,11 +50,12 @@ public class Slot implements Serializable{
 		this.typeName = typeName;
 	}
 	
-	public String getType() {
-		return type;
+	
+	public String getDictName() {
+		return dictName;
 	}
-	public void setType(String type) {
-		this.type = type;
+	public void setDictName(String dictName) {
+		this.dictName = dictName;
 	}
 	public String getMessage() {
 		return message;

@@ -7,6 +7,7 @@ import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.SelectKey;
 import org.apache.ibatis.annotations.Update;
 
 import jice.vigortech.chat.robot.modules.user.entity.User;
@@ -36,9 +37,17 @@ public interface UserDao {
 			+ "order by sort ")
 	List<String> getSuperAuthRole();
 	
+	@Select("select token from sys_user_config where name=#{name}")
+	Map<String, Object> getTokenByUserName(@Param("name")String name);
+	
 	@Insert("insert into sys_user(`name`,`password`,phone,email,role,create_date,update_date ) "
 			+ "values(#{name},#{password},#{phone},#{email},#{role},#{createDateString},#{updateDateString})")
+	@SelectKey(before = false, keyProperty = "id", resultType = Integer.class, statement = { "select last_insert_id()" })
 	int insertUser(User user);
+	
+	@Insert("insert into sys_user_config(user_id,`name`,token,time) "
+			+ "values(#{id},#{name},#{token},#{time})")
+	int insertUserConfig(Map<String, Object> userConfig);
 	
 	@Update("update sys_user set name=#{name},password=#{password},phone=#{phone},update_date=#{updateDateString} "
 			+ "email=#{email} where id = #{id}")

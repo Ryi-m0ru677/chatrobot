@@ -9,6 +9,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import jice.vigortech.chat.robot.common.constants.ResultCode;
+import jice.vigortech.chat.robot.common.constants.SysConstants;
+import jice.vigortech.chat.robot.common.util.AESUtil;
 import jice.vigortech.chat.robot.common.util.Md5PasswordEncoderWithSalt;
 import jice.vigortech.chat.robot.common.util.SecurityUtils;
 import jice.vigortech.chat.robot.modules.user.dao.UserDao;
@@ -33,9 +35,19 @@ public class UserService{
 		if(user.getId()==null){
 			//添加
 			try {
+				
+				String password = Md5PasswordEncoderWithSalt.encodePassword(user.getPassword()); 
 				user.setRole("sys_user");
-				user.setPassword(Md5PasswordEncoderWithSalt.encodePassword(user.getPassword()));
-				userDao.insertUser(user);
+				user.setPassword(password);
+				if(userDao.insertUser(user)>0){
+					Map<String,Object> userConfig = new HashMap<String,Object>();
+					String token = AESUtil.encrypt(user.getName(), SysConstants.SYS_TOKEN_SALT);
+					userConfig.put("id", user.getId());
+					userConfig.put("name", user.getName());
+					userConfig.put("token", token);
+					userConfig.put("time", "30");
+					userDao.insertUserConfig(userConfig);
+				}
 				return ResultCode.OPERATION_SUCCESSED;
 			} catch (Exception e) {
 				e.printStackTrace();
@@ -89,5 +101,12 @@ public class UserService{
 			e.printStackTrace();
 			return null;
 		}
+	}
+	
+	public Object getUserTokenByUserName(String username) {
+		Map<String,Object> data = new HashMap<String,Object>();
+		Map<String,Object> token = userDao.getTokenByUserName(username);
+		data.put("token", token);
+		return data;
 	}
 }

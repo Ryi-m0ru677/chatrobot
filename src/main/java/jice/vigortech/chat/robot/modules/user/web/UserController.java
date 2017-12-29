@@ -14,7 +14,7 @@ import jice.vigortech.chat.robot.common.model.web.BaseController;
 import jice.vigortech.chat.robot.modules.user.entity.User;
 import jice.vigortech.chat.robot.modules.user.service.UserService;
 @RestController
-@RequestMapping(path=SysConstants.SYS_URL+"/user", method=RequestMethod.POST)
+@RequestMapping(path=SysConstants.SYS_URL+"/user", method=RequestMethod.GET)
 public class UserController extends BaseController{
 
 	@Autowired
@@ -27,7 +27,7 @@ public class UserController extends BaseController{
 		return Result();
 	}
 	
-	@RequestMapping("/add")
+	@RequestMapping("/regist")
 	public String addUser(@Validated User user, BindingResult result){
 		if(result.hasErrors()){
 			setErrorResultCode(result);

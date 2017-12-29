@@ -13,7 +13,7 @@ public class Ask implements Serializable{
 	private Integer id;
 	private String text;
 	private String intent;//场景名称
-	private List<Entity> entity;
+	private List<Entity> entitys;
 	private Integer delFlag;
 	public String getText() {
 		return text;
@@ -34,11 +34,12 @@ public class Ask implements Serializable{
 	public void setIntent(String intent) {
 		this.intent = intent;
 	}
-	public List<Entity> getEntity() {
-		return entity;
+	
+	public List<Entity> getEntitys() {
+		return entitys;
 	}
-	public void setEntity(List<Entity> entity) {
-		this.entity = entity;
+	public void setEntitys(List<Entity> entitys) {
+		this.entitys = entitys;
 	}
 	public Integer getDelFlag() {
 		return delFlag;

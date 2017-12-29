@@ -19,10 +19,9 @@ import jice.vigortech.chat.robot.modules.intents.entity.Slot;
 public interface IntentDao {
 	//添加场景
 	@Insert("insert into robot_scene "
-			+ "("
-			+ "app_id, name, rank,answer, act_name,  create_date,update_date) "
+			+ "(app_id, name, rank,answer, act_name,update_date) "
 			+ "values(#{appId}, #{name}, #{rank},#{answer}, #{actionName}, "
-			+ "#{createDateString},#{updateDateString}) "
+			+ "#{updateDateString}) "
 			)
 	@SelectKey(before = false, keyProperty = "id", resultType = Integer.class, statement = { "select last_insert_id()" })
 	Integer insertIntent(Intents intent);
@@ -40,8 +39,8 @@ public interface IntentDao {
 	int insertEntity(Entity entity);
 	
 	@Insert("insert into robot_scene_slot("
-			+ "int_id,flag,type,type_name,`message`,def_value) "
-			+ "values(#{intentId}, #{flag}, #{type}, #{typeName}, #{message},#{defValue} )")
+			+ "int_id,flag,dict_name,type_name,`message`,def_value) "
+			+ "values(#{intentId}, #{flag}, #{dictName}, #{typeName}, #{message},#{defValue} )")
 	Integer insertAction(Slot action);
 	
 	
@@ -56,7 +55,7 @@ public interface IntentDao {
 	int deleteAskByName(@Param("name")String iname);
 	
 	//更新场景
-	@Update("update robot_scene set name=#{name},rank=#{rank},action_name=#{actionName}, "
+	@Update("update robot_scene set name=#{name},rank=#{rank},act_name=#{actionName},answer=#{answer}, "
 			+ "update_date=#{updateDateString} where id=#{id}"
 			)
 	int updateIntent(Intents intent);
@@ -70,8 +69,8 @@ public interface IntentDao {
 			+ "where id=#{id}")
 	int updateEntity(Entity entity);
 	@Update(
-			 "update robot_scene_slot set type=#{tyep},type_name=#{typeName}, "
-			+ "`message`=#{message},flag=#{flag},del_value=#{delValue} "
+			 "update robot_scene_slot set dict_name=#{dictName},type_name=#{typeName}, "
+			+ "`message`=#{message},flag=#{flag},def_value=#{defValue} "
 			+ "where id = #{id}"
 			)
 	int updateAction(Slot slot);

@@ -11,7 +11,7 @@ import jice.vigortech.chat.robot.common.constants.SysConstants;
 import jice.vigortech.chat.robot.common.model.web.BaseController;
 import jice.vigortech.chat.robot.modules.apptrain.service.TrainService;
 @RestController
-@RequestMapping(path=SysConstants.SYS_URL+"/train", method={RequestMethod.GET})
+@RequestMapping(path=SysConstants.SYS_URL+"/train", method={RequestMethod.POST})
 public class TrainContorller extends BaseController {
 
 	@Autowired

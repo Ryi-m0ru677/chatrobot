@@ -62,6 +62,7 @@ public class LoginController extends BaseController implements LogoutSuccessHand
 			resCode = ResultCode.OPERATION_FAILED;
 		}
 		data = null;
+		data = userService.getUserTokenByUserName("zhangsan");
 		CorsHandler.addCorsMapping(response);
 		writeResponse(response);
 	}
@@ -74,7 +75,7 @@ public class LoginController extends BaseController implements LogoutSuccessHand
 			Authentication authentication) throws IOException, ServletException {
 		String username = request.getParameter("username");
 		System.out.println(username);
-		
+		data = userService.getUserTokenByUserName(username);
 		resCode = ResultCode.OPERATION_SUCCESSED;
 		CorsHandler.addCorsMapping(response);
 		writeResponse(response);	

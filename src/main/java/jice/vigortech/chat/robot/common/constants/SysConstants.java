@@ -15,5 +15,6 @@ public class SysConstants{
 	public final static String SYS_USE_DICT = "SYS_USE_DICT";
 	public final static String PASSWORD_SALT = "*&34@5^#%";
 	public final static String TRAIN_URL ="http://192.168.12.70:5888/model/%s/%s";
+	public final static String SYS_TOKEN_SALT = "ijnemklodjg7894u";
 
 }

@@ -7,7 +7,10 @@ public class MyStringUtil {
 		 // System.out.println(str.indexOf("和"));
 		  System.out.println("start="+str.indexOf("小朋友玩捉迷藏"));
 		  System.out.println("end="+(str.indexOf("小朋友玩捉迷藏")+("小朋友玩捉迷藏".length())));
-		  System.out.println("end="+str.lastIndexOf("小朋友玩捉迷藏"));
+		  String str1="每次";
+		  // System.out.println(str.indexOf("和"));
+		  System.out.println("start="+str1.indexOf("每次"));
+		
 		  stringFun('次',str);
 		 }
 	 private static void stringFun(char c, String str) {

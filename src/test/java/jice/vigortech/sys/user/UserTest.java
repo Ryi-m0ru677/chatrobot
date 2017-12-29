@@ -1,5 +1,6 @@
 package jice.vigortech.sys.user;
 
+import java.util.HashMap;
 import java.util.Map;
 
 import org.junit.Test;
@@ -55,4 +56,18 @@ public class UserTest {
 		
 		
 	}
+	
+	@Test
+	public void testUserConfig(){
+		Map<String,Object> userConfig = new HashMap<String,Object>();
+		userConfig.put("id", 1);
+		userConfig.put("name", "zhanganr");
+		userConfig.put("token", "sdkajfhksajdhfkj");
+		userConfig.put("time", "30");
+		
+		userDao.insertUserConfig(userConfig);
+		System.out.println(userDao.getTokenByUserName("zhangsan"));
+	}
+	
+	
 }

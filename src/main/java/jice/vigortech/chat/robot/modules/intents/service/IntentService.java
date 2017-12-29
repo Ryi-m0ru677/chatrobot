@@ -48,14 +48,16 @@ public class IntentService {
 							ask.setIntent(intent.getName());
 							String text = ask.getText();
 							if(intentDao.insertAsk(ask)>0){
-								for(Entity entity:ask.getEntity()){
-									entity.setAskId(ask.getId());
-									String value = entity.getValue();
-									int start = text.indexOf(value);
-									int end = start+value.length();
-									entity.setStart(start);
-									entity.setEnd(end);
-									intentDao.insertEntity(entity);
+								if(ask.getEntitys()!=null){
+									for(Entity entity:ask.getEntitys()){
+										entity.setAskId(ask.getId());
+										String value = entity.getValue();
+										int start = text.indexOf(value);
+										int end = start+value.length();
+										entity.setStart(start);
+										entity.setEnd(end);
+										intentDao.insertEntity(entity);
+									}
 								}
 							}
 						}
@@ -83,26 +85,46 @@ public class IntentService {
 			if(intent.getAskList()!=null){
 				for (Ask ask : intent.getAskList()) {
 					//添加
+					ask.setIntent((String)intentDao.getIntentById(intent.getId()).get("name"));
 					if(ask.getId()==null){
-						ask.setIntent(intent.getName());
-						intentDao.insertAsk(ask);
 						String text = ask.getText();
 						if(intentDao.insertAsk(ask)>0){
-							for(Entity entity:ask.getEntity()){
-								entity.setAskId(ask.getId());
-								String value = entity.getValue();
-								int start = text.indexOf(value);
-								int end = start+value.length();
-								entity.setStart(start);
-								entity.setEnd(end);
-								intentDao.insertEntity(entity);
+							
+							intentDao.deleteEntityListByAId(ask.getId());
+							if(ask.getEntitys()!=null){
+								/*for(Entity entity:ask.getEntitys()){
+									//entity.getId();
+									if(entity.getId()==null){
+										entity.setAskId(ask.getId());
+										String value = entity.getValue();
+										int start = text.indexOf(value);
+										int end = start+value.length();
+										entity.setStart(start);
+										entity.setEnd(end);
+										intentDao.insertEntity(entity);
+									}else{
+										intentDao.updateEntity(entity);
+									}
+								}*/
+								for(Entity entity:ask.getEntitys()){
+									entity.setAskId(ask.getId());
+									String value = entity.getValue();
+									int start = text.indexOf(value);
+									int end = start+value.length();
+									entity.setStart(start);
+									entity.setEnd(end);
+									intentDao.insertEntity(entity);
+								}
+								
 							}
 						}
 					}else{
 						//修改
 						intentDao.updateAsk(ask);
-						for(Entity entity:ask.getEntity()){
-							intentDao.updateEntity(entity);
+						if(ask.getEntitys()!=null){
+							for(Entity entity:ask.getEntitys()){
+								intentDao.updateEntity(entity);
+							}
 						}
 					}
 				}
@@ -120,7 +142,7 @@ public class IntentService {
 					intentDao.updateAction(slot);
 				}
 			}
-			return intent.getId();
+			return ResultCode.OPERATION_SUCCESSED;
 		}
 		return ResultCode.OPERATION_FAILED;
 		
