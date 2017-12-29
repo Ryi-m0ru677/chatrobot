@@ -6,7 +6,7 @@ public class MyStringUtil {
 		  String str="每次和小朋友玩捉迷藏的时候，我总是等他们次先藏好，我就回家。";
 		 // System.out.println(str.indexOf("和"));
 		  System.out.println("start="+str.indexOf("小朋友玩捉迷藏"));
-		  System.out.println("end="+(str.indexOf("小朋友玩捉迷藏")+("小朋友玩捉迷藏".length())));
+		  System.out.println("end="+(str.indexOf("小朋友玩捉迷藏")+("小朋友玩捉迷藏".length()-1)));
 		  String str1="每次";
 		  // System.out.println(str.indexOf("和"));
 		  System.out.println("start="+str1.indexOf("每次"));

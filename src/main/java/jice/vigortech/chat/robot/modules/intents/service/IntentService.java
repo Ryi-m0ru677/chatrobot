@@ -134,7 +134,7 @@ public class IntentService {
 							entity.setAskId(ask.getId());
 							String value = entity.getValue();
 							int start = text.indexOf(value);
-							int end = start+value.length();
+							int end = start+value.length()-1;
 							entity.setStart(start);
 							entity.setEnd(end);
 							intentDao.insertEntity(entity);
