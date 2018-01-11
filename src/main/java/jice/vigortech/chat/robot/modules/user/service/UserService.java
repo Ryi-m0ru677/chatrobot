@@ -35,7 +35,9 @@ public class UserService{
 		if(user.getId()==null){
 			//添加
 			try {
-				
+				if(userDao.getUserByUserName(user.getUsername())!=null){
+					return ResultCode.USER_HAS_EXIST;
+				}
 				String password = Md5PasswordEncoderWithSalt.encodePassword(user.getPassword()); 
 				user.setRole("sys_user");
 				user.setPassword(password);

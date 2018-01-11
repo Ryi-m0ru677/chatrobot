@@ -29,10 +29,8 @@ public class IntentController extends BaseController{
 			try {
 				data = intentService.insertIntent(intent,appId);
 				if(data instanceof ResultCode){
-					data = null;
 					resCode = (ResultCode) data;
-				}else{
-					resCode = ResultCode.OPERATION_SUCCESSED;
+					data = null;
 				}
 			} catch (Exception e) {
 				e.printStackTrace();

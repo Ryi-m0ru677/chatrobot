@@ -52,7 +52,8 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 			.antMatchers(SysConstants.SYS_URL+"/login").hasAnyRole("SYS_USER","SYS_ADMIN")
 			/*.antMatchers(SysConstants.SYS_URL+"/intent/**").hasRole(SysConstants.SYS_USE_INTENT)
 			.antMatchers(SysConstants.SYS_URL+"/dict/**").hasRole(SysConstants.SYS_USE_DICT)
-			.antMatchers(SysConstants.SYS_URL+"/app/**").hasRole(SysConstants.SYS_USE_APP)*/
+			.antMatchers(SysConstants.SYS_URL+"/app/**").hasRole(SysConstants.SYS_USE_APP)
+			.antMatchers(SysConstants.SYS_URL + "/**").authenticated()*/
 			;
 		
 		http.addFilterAfter(securityInterceptor, ExceptionTranslationFilter.class);

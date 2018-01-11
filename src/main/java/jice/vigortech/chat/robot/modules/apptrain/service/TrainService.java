@@ -16,6 +16,7 @@ import jice.vigortech.chat.robot.common.constants.ResultCode;
 import jice.vigortech.chat.robot.common.constants.SysConstants;
 import jice.vigortech.chat.robot.common.util.HttpHelper;
 import jice.vigortech.chat.robot.common.util.MySubstringUtil;
+import jice.vigortech.chat.robot.common.util.SecurityUtils;
 import jice.vigortech.chat.robot.modules.application.dao.AppDao;
 import jice.vigortech.chat.robot.modules.apptrain.dao.TrainDao;
 import jice.vigortech.chat.robot.modules.apptrain.entity.Train;
@@ -54,6 +55,7 @@ public class TrainService {
 			train.setLocal(resp);
 			train.setTrainDate(date);
 			train.setAppId(id);
+			train.setCreateBy(SecurityUtils.getCurrentUser().getId());
 			trainDao.insertTrain(train);
 			return resp;
 		} catch (Exception e){
@@ -62,10 +64,18 @@ public class TrainService {
 		}
 	}
 	public Object getTrainList(Integer id) {
+		String sql = null;
 		Map<String,Object> data = new HashMap<String,Object>();
 		List<Map<String,Object>> list =null;
+		if(SecurityUtils.getCurrentUser().getRole().equalsIgnoreCase(SysConstants.SYS_USER)){
+			sql = String.format(SysConstants.SYS_SQL, SecurityUtils.getCurrentUser().getId());
+		}
 		try {
-			 list = trainDao.getTrainAppList(id);
+			if(id==null){
+				list = trainDao.getAllTrainAppList(sql);
+			}else{
+				list = trainDao.getTrainAppList(id,sql);
+			}
 			 data.put("trainList", list);
 			 return data;
 		} catch (Exception e) {

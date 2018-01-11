@@ -9,16 +9,18 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import jice.vigortech.chat.robot.common.constants.ResultCode;
+import jice.vigortech.chat.robot.common.util.SecurityUtils;
 import jice.vigortech.chat.robot.modules.application.dao.AppDao;
 import jice.vigortech.chat.robot.modules.application.entity.Application;
 import jice.vigortech.chat.robot.modules.dicts.dao.DictDao;
 import jice.vigortech.chat.robot.modules.dicts.entity.Dicts;
 import jice.vigortech.chat.robot.modules.intents.dao.IntentDao;
 import jice.vigortech.chat.robot.modules.intents.entity.Intents;
+import jice.vigortech.chat.robot.modules.user.entity.User;
 
 @Service
 @Transactional(readOnly=true)
-public class AppService {
+public class AppService /*extends BaseService*/{
 
 	@Autowired
 	AppDao appDao;
@@ -70,11 +72,11 @@ public class AppService {
 		if (app.getId() == null) {
 			// 新增
 			try {
-				/*User user = SecurityUtils.getCurrentUser();
+				User user = SecurityUtils.getCurrentUser();
 				if(user==null){
 					return ResultCode.OPERATION_NOT_PERMITTED;
 				}
-				app.setCreateBy(user.getId());*/
+				app.setCreateBy(user.getId());
 				appDao.insertApp(app);
 				return ResultCode.OPERATION_SUCCESSED;
 			} catch (Exception e) {

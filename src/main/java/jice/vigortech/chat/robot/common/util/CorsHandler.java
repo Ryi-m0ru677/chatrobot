@@ -8,7 +8,7 @@ public class CorsHandler {
 
 	public static void addCorsMapping(HttpServletResponse response) {
 		if(SysConstants.SERVER_ALLOW_CORSDOMAIN) {
-				response.setHeader("Access-Control-Allow-Origin", SysConstants.SERVER_CORSDOMAIN);
+				response.setHeader("Access-Control-Allow-Origin", "http://localhost:8081"/*SysConstants.SERVER_CORSDOMAIN*/);
 				response.setHeader("Access-Control-Allow-Methods", "POST, GET, OPTIONS, PUT, DELETE");
 				response.setHeader("Access-Control-Max-Age", "3600");
 				response.setHeader("Access-Control-Allow-Headers", "x-requested-with");

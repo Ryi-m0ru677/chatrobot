@@ -41,8 +41,8 @@ public interface DictDao {
 	//查询词库信息
 	@Select("<script>"
 			+ "select id id ,`name` `name`,pinyin from robot_dict where del_flag=0 and app_id=${appId}  "
-			+ "<if test=\"name!=null and name=''\">"
-			+ "and name like concat('%', #{name},'%')"
+			+ "<if test=\"name != null and name != ''\">"
+			+ "and name like concat('%', #{name}, '%') "
 			+ "</if> "
 			+ "order by id "
 			+ "</script>")

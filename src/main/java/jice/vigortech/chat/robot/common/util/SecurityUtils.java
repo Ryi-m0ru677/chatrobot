@@ -19,6 +19,7 @@ public class SecurityUtils {
 	}
 	
 	public static User getCurrentUser() {
+		
 		UserDetails principal = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 		if(principal == null) {
 			return null;

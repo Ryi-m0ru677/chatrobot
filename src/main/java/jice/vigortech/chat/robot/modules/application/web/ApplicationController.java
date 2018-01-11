@@ -50,9 +50,7 @@ public class ApplicationController extends BaseController{
 				if(data instanceof ResultCode) {
 					resCode = (ResultCode) data;
 					data = null;
-				} else {
-					resCode = ResultCode.OPERATION_SUCCESSED;
-				}
+				} 
 			} catch (Exception e) {
 				e.printStackTrace();
 				data = null;
@@ -68,8 +66,8 @@ public class ApplicationController extends BaseController{
 			
 			data = appService.getAppDetail(id);
 			if(data instanceof ResultCode){
-				data =null;
 				resCode = (ResultCode) data;
+				data =null;
 			}else{
 				resCode = ResultCode.OPERATION_SUCCESSED;
 			}

@@ -32,8 +32,8 @@ public class TrainContorller extends BaseController {
 	public String getTrainList(@Param("id")Integer id){
 		data  = trainService.getTrainList(id);
 		if(data instanceof ResultCode){
-			data=null;
 			resCode=(ResultCode) data;
+			data=null;
 		}else{
 			resCode=ResultCode.OPERATION_SUCCESSED;
 		}

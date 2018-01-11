@@ -21,7 +21,6 @@ public class APPConfiguration extends WebMvcConfigurerAdapter{
 		registry.addInterceptor(userInterceptor)
 		//.addPathPatterns(SysConstants.SYS_URL+"/user/**")//addPathPatterns 用于添加拦截规则
 		.addPathPatterns(SysConstants.SYS_URL+"/login/**")//addPathPatterns 用于添加拦截规则
-		.excludePathPatterns(SysConstants.SYS_URL+"/user/bind")// excludePathPatterns 用户排除拦截
 		.excludePathPatterns("/test/**")
 		;
 		//TODO

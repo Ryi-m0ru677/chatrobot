@@ -14,6 +14,7 @@ public class Train  implements Serializable{
 	private String trainDate;
 	private String name;
 	private String local;
+	private Integer createBy;
 	private Integer delFlag;
 	public Integer getId() {
 		return id;
@@ -51,4 +52,11 @@ public class Train  implements Serializable{
 	public void setDelFlag(Integer delFlag) {
 		this.delFlag = delFlag;
 	}
+	public Integer getCreateBy() {
+		return createBy;
+	}
+	public void setCreateBy(Integer createBy) {
+		this.createBy = createBy;
+	}
+	
 }

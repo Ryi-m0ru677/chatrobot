@@ -30,7 +30,7 @@ public class IntentService {
 	 * @return
 	 */
 	@Transactional(readOnly=false, rollbackFor=Exception.class)
-	public Object insertIntent(Intents intent, Integer id) {
+	public ResultCode insertIntent(Intents intent, Integer id) {
 		intent.setAppId(id);
 		if(appDao.getAppById(id)==null){
 			return ResultCode.APP_NOT_EXIST;
@@ -41,10 +41,13 @@ public class IntentService {
 			try {
 				if(intentDao.checkByName(intent.getName())!=null){
 					return ResultCode.INTENT_HAS_EXIST;
-				}
-				if(intentDao.insertIntent(intent)>0){
-					insertIntent(intent);
-					return ResultCode.OPERATION_SUCCESSED;
+				}else{
+					if(intentDao.insertIntent(intent)>0){
+						insertIntent(intent);
+						return ResultCode.OPERATION_SUCCESSED;
+					}else{
+						return ResultCode.OPERATION_SUCCESSED;
+					}
 				}
 			} catch (Exception e) {
 				e.printStackTrace();
@@ -55,16 +58,17 @@ public class IntentService {
 		Map<String,Object> old = intentDao.getIntentById(intent.getId());
 		if(old==null){
 			return ResultCode.INTENT_NOT_EXIST;
+		}else{
+			if(intentDao.updateIntent(intent)>=0 ){
+				//修改或添加ask
+				Map<String,Object> temp  = intentDao.getIntentById(intent.getId());
+				deleteAskAndSlot(temp,intent.getId());
+				insertIntent(intent);
+				return ResultCode.OPERATION_SUCCESSED;
+			}else{
+				return ResultCode.OPERATION_FAILED;
+			}
 		}
-		if(intentDao.updateIntent(intent)>=0 ){
-			//修改或添加ask
-			Map<String,Object> temp  = intentDao.getIntentById(intent.getId());
-			deleteAskAndSlot(temp,intent.getId());
-			insertIntent(intent);
-			return ResultCode.OPERATION_SUCCESSED;
-		}
-		return ResultCode.OPERATION_FAILED;
-		
 	}
 	/**
 	 * 删除 场景
