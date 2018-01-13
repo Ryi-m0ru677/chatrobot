@@ -20,6 +20,7 @@ import jice.vigortech.chat.robot.common.util.SecurityUtils;
 import jice.vigortech.chat.robot.modules.application.dao.AppDao;
 import jice.vigortech.chat.robot.modules.apptrain.dao.TrainDao;
 import jice.vigortech.chat.robot.modules.apptrain.entity.Train;
+import jice.vigortech.chat.robot.modules.sys.entity.PageQuery;
 
 @Service
 @Transactional(readOnly=true)
@@ -55,7 +56,7 @@ public class TrainService {
 			train.setLocal(resp);
 			train.setTrainDate(date);
 			train.setAppId(id);
-			train.setCreateBy(SecurityUtils.getCurrentUser().getId());
+			train.setCreateBy(SecurityUtils.getCurrentUser());
 			trainDao.insertTrain(train);
 			return resp;
 		} catch (Exception e){
@@ -63,18 +64,21 @@ public class TrainService {
 			return null;
 		}
 	}
-	public Object getTrainList(Integer id) {
-		String sql = null;
+	public Object getTrainList(PageQuery query, Integer id) {
+		String sql = query.getSql();
+		
 		Map<String,Object> data = new HashMap<String,Object>();
 		List<Map<String,Object>> list =null;
 		if(SecurityUtils.getCurrentUser().getRole().equalsIgnoreCase(SysConstants.SYS_USER)){
-			sql = String.format(SysConstants.SYS_SQL, SecurityUtils.getCurrentUser().getId());
+			sql = sql+String.format(SysConstants.SYS_SQL, SecurityUtils.getCurrentUser().getId());
+		}else{
+			sql=null;
 		}
 		try {
 			if(id==null){
-				list = trainDao.getAllTrainAppList(sql);
+				list = trainDao.getAllTrainAppList(query);
 			}else{
-				list = trainDao.getTrainAppList(id,sql);
+				list = trainDao.getTrainAppList(id,query);
 			}
 			 data.put("trainList", list);
 			 return data;

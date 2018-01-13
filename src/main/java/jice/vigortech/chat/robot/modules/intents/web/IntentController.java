@@ -14,6 +14,7 @@ import jice.vigortech.chat.robot.common.constants.SysConstants;
 import jice.vigortech.chat.robot.common.model.web.BaseController;
 import jice.vigortech.chat.robot.modules.intents.entity.Intents;
 import jice.vigortech.chat.robot.modules.intents.service.IntentService;
+import jice.vigortech.chat.robot.modules.sys.entity.PageQuery;
 
 @RestController
 @RequestMapping(path=SysConstants.SYS_URL+"/intent",method={RequestMethod.POST})
@@ -68,8 +69,8 @@ public class IntentController extends BaseController{
 	}
 	
 	@RequestMapping("/list")
-	public String getIntentList(@RequestParam("name") String name,@RequestParam("appId") Integer appId){
-		data = intentService.getIntentList(name,appId);
+	public String getIntentList(PageQuery query,@RequestParam("appId") Integer appId){
+		data = intentService.getIntentList(query,appId);
 		resCode = ResultCode.OPERATION_SUCCESSED;
 		return Result();
 	}

@@ -1,5 +1,6 @@
 package jice.vigortech.chat.robot.modules.mservices.service;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -13,6 +14,7 @@ import jice.vigortech.chat.robot.modules.mservices.dao.MSerivceDao;
 import jice.vigortech.chat.robot.modules.mservices.entity.Iattribute;
 import jice.vigortech.chat.robot.modules.mservices.entity.MicService;
 import jice.vigortech.chat.robot.modules.mservices.entity.Minterface;
+import jice.vigortech.chat.robot.modules.sys.entity.PageQuery;
 import jice.vigortech.chat.robot.modules.user.entity.User;
 
 @Service
@@ -23,12 +25,19 @@ public class MServiceService /*extends BaseService*/{
 	MSerivceDao mServiceDao;
 	/**
 	 * 获取微服务列表
-	 * @param name 
+	 * @param query 
 	 * @return
 	 */
-	public Object getMicServiceList(String name) {
+	public Object getMicServiceList(PageQuery query) {
+		Map<String,Object> data = new HashMap<String,Object>();
+		List<Map<String,Object>> list = null;
+		int total = 0;
 		try {
-			return mServiceDao.getMicServiceList(name);
+			list =  mServiceDao.getMicServiceList(query);
+			total =  mServiceDao.getMicServiceCount(query);
+			data.put("mServiceList", list);
+			data.put("total", total);
+			return data;
 		} catch (Exception e) {
 			e.printStackTrace();
 			return ResultCode.OPERATION_FAILED;
@@ -75,7 +84,6 @@ public class MServiceService /*extends BaseService*/{
 		if(mServiceDao.getMicServiceById(id)==null){
 			return ResultCode.MIC_NOT_EXIST;
 		}
-		
 		try {
 			delete(id);
 			mServiceDao.deleteMicService(id);
@@ -89,7 +97,7 @@ public class MServiceService /*extends BaseService*/{
 	
 	private void save(MicService micService){
 		User user = SecurityUtils.getCurrentUser();
-		micService.setCreateBy(user.getId());
+		micService.setCreateBy(user);
 		if(mServiceDao.saveMicService(micService)>0){
 			if(micService.getInterList()!=null){
 				for (Minterface temp1 : micService.getInterList()) {

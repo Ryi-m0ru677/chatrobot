@@ -29,6 +29,9 @@ public enum ResultCode {
 	INTENT_HAS_EXIST("303","场景已经存在"),
 	DICT_NOT_EXIST("304","词库不存在"),
 	MIC_NOT_EXIST("305","微服务不存在"),
+	PROCESS_NOT_EXIST("306","流程不存在"),  
+	ROLE_NOT_EXITS("307","角色不存在"), 
+	OFFICE_NOT_EXITS("308","机构不存在"),
 	
 	ROLE_NAME_EMPTY("601", "权限名不能为空"),
 	ROLE_NAME_EXIST("602", "权限名已存在"), 

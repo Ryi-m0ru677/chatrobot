@@ -2,6 +2,8 @@ package jice.vigortech.chat.robot.common.model.entity;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 import org.hibernate.validator.constraints.Length;
 
@@ -9,6 +11,7 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import jice.vigortech.chat.robot.common.util.DateUtils;
+import jice.vigortech.chat.robot.modules.user.entity.User;
 
 public class BaseEntity implements Serializable {
 
@@ -17,7 +20,7 @@ public class BaseEntity implements Serializable {
 	 */
 	private static final long serialVersionUID = 1L;
 
-	protected Integer createBy; // 创建者
+	protected User createBy; // 创建者
 
 	protected Date createDate; // 创建日期
 
@@ -28,6 +31,11 @@ public class BaseEntity implements Serializable {
 	protected String createDateString;
 
 	protected String updateDateString;
+	
+	protected Map<String, String> sqlMap;
+	
+
+	
 
 	/**
 	 * 获取创建时间字符串
@@ -62,11 +70,13 @@ public class BaseEntity implements Serializable {
 		this.createDate = createDate;
 	}
 
-	public Integer getCreateBy() {
+
+	public User getCreateBy() {
 		return createBy;
 	}
 
-	public void setCreateBy(Integer createBy) {
+	public void setCreateBy(User createBy) {
+		//TODO user = securityUtil.getUSer
 		this.createBy = createBy;
 	}
 
@@ -87,5 +97,16 @@ public class BaseEntity implements Serializable {
 
 	public void setDelFlag(String delFlag) {
 		this.delFlag = delFlag;
+	}
+	
+	public Map<String, String> getSqlMap() {
+		if (sqlMap == null){
+			sqlMap = new HashMap<String,String>();
+		}
+		return sqlMap;
+	}
+
+	public void setSqlMap(Map<String, String> sqlMap) {
+		this.sqlMap = sqlMap;
 	}
 }

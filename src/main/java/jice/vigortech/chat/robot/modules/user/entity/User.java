@@ -1,8 +1,11 @@
 package jice.vigortech.chat.robot.modules.user.entity;
 
 import java.io.Serializable;
+import java.util.List;
 
 import jice.vigortech.chat.robot.common.model.entity.BaseEntity;
+import jice.vigortech.chat.robot.modules.sys.office.entity.Office;
+import jice.vigortech.chat.robot.modules.sys.role.entity.Role;
 
 public class User extends BaseEntity implements Serializable {
 
@@ -16,7 +19,35 @@ public class User extends BaseEntity implements Serializable {
 	private String phone;
 	private String email;
 	private String role;
-	private Integer roleGroupId;
+	private List<Role> roleList;
+	private Office company;	// 归属公司
+	private Office office;	// 归属部门
+	
+
+	
+	public Office getCompany() {
+		return company;
+	}
+
+	public void setCompany(Office company) {
+		this.company = company;
+	}
+
+	public Office getOffice() {
+		return office;
+	}
+
+	public void setOffice(Office office) {
+		this.office = office;
+	}
+
+	public List<Role> getRoleList() {
+		return roleList;
+	}
+
+	public void setRoleList(List<Role> roleList) {
+		this.roleList = roleList;
+	}
 
 	public Integer getId() {
 		return id;
@@ -68,13 +99,7 @@ public class User extends BaseEntity implements Serializable {
 		this.role = role;
 	}
 
-	public Integer getRoleGroupId() {
-		return roleGroupId;
-	}
-
-	public void setRoleGroupId(Integer roleGroupId) {
-		this.roleGroupId = roleGroupId;
-	}
+	
 
 	
 }

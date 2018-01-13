@@ -12,6 +12,7 @@ import org.apache.ibatis.annotations.Update;
 
 import jice.vigortech.chat.robot.modules.dicts.entity.Dicts;
 import jice.vigortech.chat.robot.modules.dicts.entity.Synonymy;
+import jice.vigortech.chat.robot.modules.sys.entity.PageQuery;
 
 @Mapper
 public interface DictDao {
@@ -25,8 +26,8 @@ public interface DictDao {
 	
 	
 	//添加
-	@Insert("insert into robot_dict (app_id,name,pinyin,syno_flag,update_date) "
-			+ "values(#{appId},#{name},#{pinyin},#{synonymyFlag},#{updateDateString})")
+	@Insert("insert into robot_dict (app_id,name,pinyin,syno_flag,create_date,update_date) "
+			+ "values(#{appId},#{name},#{pinyin},#{synonymyFlag},#{updateDateString},#{updateDateString})")
 	@SelectKey(before = false, keyProperty = "id", resultType = Integer.class, statement = { "select last_insert_id()" })
 	int insertDict(Dicts dict);
 	@Insert("insert into robot_dict_word (dict_id,keyword,synonymy) "
@@ -40,13 +41,28 @@ public interface DictDao {
 	int updateDictWord(Synonymy syn);
 	//查询词库信息
 	@Select("<script>"
-			+ "select id id ,`name` `name`,pinyin from robot_dict where del_flag=0 and app_id=${appId}  "
-			+ "<if test=\"name != null and name != ''\">"
-			+ "and name like concat('%', #{name}, '%') "
+			+ "select id id ,`name`,create_date createDate,update_date updateDate,pinyin from robot_dict where del_flag=0 and app_id=${appId}  "
+			+ "<if test=\"page.name != null and page.name != ''\">"
+			+ "and name like concat('%', #{page.name}, '%') "
+			+ "</if> "
+			+ "<if test=\"page.date != null and page.date != ''\">"
+			+ "and update_date like concat('%', #{page.date}, '%') "
 			+ "</if> "
 			+ "order by id "
+			+ "limit ${page.rowNo}, ${page.pageSize} "
 			+ "</script>")
-	List<Map<String, Object>> getDicList(@Param("name")String name,@Param("appId") Integer appId);
+	List<Map<String, Object>> getDicList(@Param("appId")Integer appId,@Param("page") PageQuery query);
+	
+	@Select("<script>"
+			+ "select count(1) from robot_dict where del_flag=0 and app_id=${appId}  "
+			+ "<if test=\"page.name != null and page.name != ''\">"
+			+ "and name like concat('%', #{page.name}, '%') "
+			+ "</if> "
+			+ "<if test=\"page.date != null and page.date != ''\">"
+			+ "and update_date like concat('%', #{page.date}, '%') "
+			+ "</if> "
+			+ "</script>")
+	int getDicCount(@Param("page")PageQuery query,@Param("appId") Integer appId);
 	
 	@Select("select id id ,`name` `name`, app_id appId,syno_flag synonymyFlag from robot_dict where del_flag = 0 and id=${id}")
 	Map<String,Object> getDictById(@Param("id")Integer id);
@@ -56,5 +72,6 @@ public interface DictDao {
 	
 	@Select("select id from robot_dict where del_flag=0 and app_id=${appId} ")
 	List<Dicts> getDictByAppId(@Param("appId")Integer appId);
+
 
 }

@@ -10,6 +10,7 @@ import org.apache.ibatis.annotations.Select;
 import org.apache.ibatis.annotations.Update;
 
 import jice.vigortech.chat.robot.modules.application.entity.Application;
+import jice.vigortech.chat.robot.modules.sys.entity.PageQuery;
 
 @Mapper
 public interface AppDao {
@@ -32,15 +33,32 @@ public interface AppDao {
 	Application findAppById(@Param("id")Integer id);
 
 	@Select("<script>"
-			+ "select id id, name `name`,update_date "
+			+ "select id id, name `name`,create_date createDate,update_date updateDate,create_by createBy "
 			+ "from robot_app where del_flag=0 ${sql} "
 			+ "<if test=\"name != null and name != ''\">"
 			+ "and name like concat('%', #{name}, '%') "
 			+ "</if> "
+			+ "<if test=\"date != null and date != ''\">"
+			+ "and update_date like concat('%', #{date}, '%') "
+			+ "</if> "
 			+ "order by update_date "
+			+ "limit ${rowNo}, ${pageSize} "
 			+ "</script>"
 			)
-	List<Map<String, Object>> getAllAppList(@Param("name") String name,@Param("sql") String sql);
+	List<Map<String, Object>> getAllAppList(PageQuery query);
+	
+	@Select("<script>"
+			+ "select count(1) "
+			+ "from robot_app where del_flag=0 ${sql} "
+			+ "<if test=\"name != null and name != ''\">"
+			+ "and name like concat('%', #{name}, '%') "
+			+ "</if> "
+			+ "<if test=\"date != null and date != ''\">"
+			+ "and update_date like concat('%', #{date}, '%') "
+			+ "</if> "
+			+ "</script>"
+			)
+	int getAppCount(PageQuery query);
 	
 	@Update("update robot_app set del_flag=1 where id = ${id}")
 	Integer deleteApp(@Param("id")Integer id);
@@ -50,7 +68,7 @@ public interface AppDao {
 			+ "def_reply,storage,create_by,create_date,update_date ) "
 			+ "values( "
 			+ "#{name},#{isPrivate},#{describe},#{link},#{language},#{zone}, "
-			+ "#{clientToken},#{devToken},#{defReply},#{storage},#{createBy},#{createDateString}, "
+			+ "#{clientToken},#{devToken},#{defReply},#{storage},#{createBy.name},#{createDateString}, "
 			+ "#{updateDateString} ) "
 			)
 	Integer insertApp(Application app);

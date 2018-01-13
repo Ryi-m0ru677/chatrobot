@@ -11,6 +11,7 @@ import jice.vigortech.chat.robot.common.constants.SysConstants;
 import jice.vigortech.chat.robot.common.model.web.BaseController;
 import jice.vigortech.chat.robot.modules.mservices.entity.MicService;
 import jice.vigortech.chat.robot.modules.mservices.service.MServiceService;
+import jice.vigortech.chat.robot.modules.sys.entity.PageQuery;
 @RestController
 @RequestMapping(path=SysConstants.SYS_URL+"/mic_service", method={RequestMethod.POST})
 public class MServiceContrlloer extends BaseController {
@@ -19,8 +20,8 @@ public class MServiceContrlloer extends BaseController {
 	MServiceService mServiceService;
 	
 	@RequestMapping("/list")
-	public String getMicServiceList(@RequestParam("name") String name){
-		data = mServiceService.getMicServiceList(name);
+	public String getMicServiceList(PageQuery query){
+		data = mServiceService.getMicServiceList(query);
 		if(data instanceof ResultCode){
 			resCode = (ResultCode) data;
 			data=null;

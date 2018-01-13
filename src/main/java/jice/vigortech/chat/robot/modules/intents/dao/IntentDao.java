@@ -14,13 +14,14 @@ import jice.vigortech.chat.robot.modules.intents.entity.Ask;
 import jice.vigortech.chat.robot.modules.intents.entity.Entity;
 import jice.vigortech.chat.robot.modules.intents.entity.Intents;
 import jice.vigortech.chat.robot.modules.intents.entity.Slot;
+import jice.vigortech.chat.robot.modules.sys.entity.PageQuery;
 
 @Mapper
 public interface IntentDao {
 	//添加场景
 	@Insert("insert into robot_scene "
-			+ "(app_id, name, rank,answer, act_name,update_date) "
-			+ "values(#{appId}, #{name}, #{rank},#{answer}, #{actionName}, "
+			+ "(app_id, name, rank,answer, act_name,create_date,update_date) "
+			+ "values(#{appId}, #{name}, #{rank},#{answer}, #{actionName},#{updateDateString} "
 			+ "#{updateDateString}) "
 			)
 	@SelectKey(before = false, keyProperty = "id", resultType = Integer.class, statement = { "select last_insert_id()" })
@@ -85,13 +86,28 @@ public interface IntentDao {
 	Map<String,Object> getIntentById(@Param("id")Integer id);
 	
 	@Select("<script>"
-			+ "select id id,name name,update_date updateDate from robot_scene where del_flag=0 and app_id=${id} "
-			+ "<if test=\"name != null and name != ''\">"
-			+ "and name like concat('%', #{name}, '%')  "
-			+ "</if>"
+			+ "select id id,`name`,create_date createDate,update_date updateDate from robot_scene where del_flag=0 and app_id=${id} "
+			+ "<if test=\"page.name != null and page.name != ''\">"
+			+ "and name like concat('%', #{page.name}, '%') "
+			+ "</if> "
+			+ "<if test=\"page.date != null and page.date != ''\">"
+			+ "and update_date like concat('%', #{page.date}, '%') "
+			+ "</if> "
 			+ "order by update_date desc "
+			+ "limit ${page.rowNo}, ${page.pageSize} "
 			+ "</script>")
-	List<Map<String, Object>> getIntentList(@Param("name")String name,@Param("id") Integer id);
+	List<Map<String, Object>> getIntentList(@Param("page")PageQuery query,@Param("id") Integer id);
+	
+	@Select("<script>"
+			+ "select count(1) from robot_scene where del_flag=0 and app_id=${id} "
+			+ "<if test=\"page.name != null and page.name != ''\">"
+			+ "and name like concat('%', #{page.name}, '%')  "
+			+ "</if>"
+			+ "<if test=\"page.date != null and page.date != ''\">"
+			+ "and update_date like concat('%', #{page.date}, '%') "
+			+ "</if> "
+			+ "</script>")
+	int getIntentCount(@Param("page")PageQuery query,@Param("id")Integer id);
 	
 	@Select("select id id ,text text,intent intent from robot_scene_ask where intent=#{name} and del_flag=0")
 	List<Map<String, Object>> getAskListByIName(@Param("name") String name);

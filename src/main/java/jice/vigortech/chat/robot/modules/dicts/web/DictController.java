@@ -13,6 +13,7 @@ import jice.vigortech.chat.robot.common.constants.SysConstants;
 import jice.vigortech.chat.robot.common.model.web.BaseController;
 import jice.vigortech.chat.robot.modules.dicts.entity.Dicts;
 import jice.vigortech.chat.robot.modules.dicts.service.DictService;
+import jice.vigortech.chat.robot.modules.sys.entity.PageQuery;
 @RestController
 @RequestMapping(path=SysConstants.SYS_URL+"/dict", method={RequestMethod.POST})
 public class DictController extends BaseController{
@@ -20,8 +21,8 @@ public class DictController extends BaseController{
 	@Autowired
 	DictService dictService;
 	@RequestMapping("/list")
-	public String getDicList(@RequestParam("name") String name,@RequestParam("appId") Integer appId){
-		data = dictService.getDicList(name,appId);
+	public String getDicList(PageQuery query,@RequestParam("appId") Integer appId){
+		data = dictService.getDicList(appId ,query);
 		resCode = ResultCode.OPERATION_SUCCESSED;
 		return Result();
 	}

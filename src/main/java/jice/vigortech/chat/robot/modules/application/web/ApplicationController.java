@@ -13,6 +13,7 @@ import jice.vigortech.chat.robot.common.constants.SysConstants;
 import jice.vigortech.chat.robot.common.model.web.BaseController;
 import jice.vigortech.chat.robot.modules.application.entity.Application;
 import jice.vigortech.chat.robot.modules.application.service.AppService;
+import jice.vigortech.chat.robot.modules.sys.entity.PageQuery;
 
 @RestController
 @RequestMapping(path = SysConstants.SYS_URL+"/app",method={RequestMethod.POST})
@@ -24,9 +25,9 @@ public class ApplicationController extends BaseController{
 	@Autowired 
 	AppService appService;
 	@RequestMapping("/list")
-	public String getAppList(/*PageQuery query,*/@RequestParam("name") String name){
+	public String getAppList(PageQuery query){
 		//TODO加上user当参数做数据权限
-		data=appService.getAppList(name);
+		data=appService.getAppList(query);
 		if(data instanceof ResultCode){
 			resCode = (ResultCode) data;
 			data=null;

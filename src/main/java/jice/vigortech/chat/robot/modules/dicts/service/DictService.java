@@ -12,6 +12,7 @@ import jice.vigortech.chat.robot.common.constants.ResultCode;
 import jice.vigortech.chat.robot.modules.dicts.dao.DictDao;
 import jice.vigortech.chat.robot.modules.dicts.entity.Dicts;
 import jice.vigortech.chat.robot.modules.dicts.entity.Synonymy;
+import jice.vigortech.chat.robot.modules.sys.entity.PageQuery;
 
 @Service
 @Transactional(readOnly=true)
@@ -21,20 +22,21 @@ public class DictService {
 	DictDao dictDao;
 	/**
 	 * 根据应用id获取词库
-	 * @param name
-	 * @param appId 应用id
+	 * @param appId
+	 * @param query 应用id
 	 * @return
 	 */
-	public Object getDicList(String name, Integer appId) {
+	public Object getDicList(Integer appId, PageQuery query) {
 		Map<String,Object> data = new HashMap<String,Object>();
 		List<Map<String,Object>> dictList = null;
 		try {
-			dictList = dictDao.getDicList(name,appId);
+			dictList = dictDao.getDicList(appId,query);
 		} catch (Exception e) {
 			e.printStackTrace();
 			dictList = null;
 		}
 		data.put("dictList", dictList);
+		data.put("total", dictDao.getDicCount(query,appId));
 		return data;
 	}
 	/**

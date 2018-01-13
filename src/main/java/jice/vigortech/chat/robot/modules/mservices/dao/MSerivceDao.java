@@ -14,6 +14,7 @@ import org.apache.ibatis.annotations.Update;
 import jice.vigortech.chat.robot.modules.mservices.entity.Iattribute;
 import jice.vigortech.chat.robot.modules.mservices.entity.MicService;
 import jice.vigortech.chat.robot.modules.mservices.entity.Minterface;
+import jice.vigortech.chat.robot.modules.sys.entity.PageQuery;
 
 @Mapper
 public interface MSerivceDao {
@@ -21,7 +22,7 @@ public interface MSerivceDao {
 	
 	@Insert("insert into robot_mic_service ("
 			+ "`name`,ename,ip,`describe`,create_by,create_date,update_date )"
-			+ "values( #{name},#{ename},#{ip},#{describe},#{createBy},#{updateDateString},#{updateDateString}"
+			+ "values( #{name},#{ename},#{ip},#{describe},#{createBy.username},#{updateDateString},#{updateDateString}"
 			+ ") ")
 	@SelectKey(before = false, keyProperty = "id", resultType = Integer.class, statement = { "select last_insert_id()" })
 	int saveMicService(MicService micService);
@@ -45,9 +46,28 @@ public interface MSerivceDao {
 			+ "<if test=\"name!=null and name!=''\"> "
 			+ "and a.name like concat('%',#{name},'%') "
 			+ "</if>"
+			+ "<if test=\"date != null and date != ''\">"
+			+ "and a.update_date like concat('%', #{date}, '%') "
+			+ "</if> "
 			+ "order by a.update_date "
+			+ "limit ${rowNo}, ${pageSize} "
 			+ "</script>")
-	List<Map<String,Object>> getMicServiceList(@Param("name")String name);
+	List<Map<String,Object>> getMicServiceList(PageQuery query);
+	
+	@Select("<script> "
+			+ "SELECT count(1) "
+			+ "FROM robot_mic_service as a "
+			+ "LEFT JOIN robot_mic_interface as  b ON b.mid = a.id "
+			+ "LEFT JOIN robot_mic_arrt as c ON b.id = c.iid "
+			+ "WHERE a.del_flag = 0  "
+			+ "<if test=\"name!=null and name!=''\"> "
+			+ "and a.name like concat('%',#{name},'%') "
+			+ "</if>"
+			+ "<if test=\"date != null and date != ''\">"
+			+ "and a.update_date like concat('%', #{date}, '%') "
+			+ "</if> "
+			+ "</script>")
+	int getMicServiceCount(PageQuery query);
 	
 	@Select("select `name`,ename,`describe`,`ip`,id from robot_mic_service "
 			+ "where del_flag=0 and id=${id}")
@@ -64,4 +84,5 @@ public interface MSerivceDao {
 	
 	@Update("update robot_mic_service set del_flag=1 where id=${id}")
 	int deleteMicService(@Param("id")Integer id);
+
 }

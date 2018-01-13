@@ -46,7 +46,7 @@ public class IntentTest {
 	
 	@Test
 	public void getIntentList(){
-		System.out.println(intentDao.getIntentList("", 23));
+		//System.out.println(intentDao.getIntentList("", 23));
 	}
 	
 	@Test

@@ -15,6 +15,7 @@ import jice.vigortech.chat.robot.modules.intents.entity.Ask;
 import jice.vigortech.chat.robot.modules.intents.entity.Entity;
 import jice.vigortech.chat.robot.modules.intents.entity.Intents;
 import jice.vigortech.chat.robot.modules.intents.entity.Slot;
+import jice.vigortech.chat.robot.modules.sys.entity.PageQuery;
 
 @Service
 @Transactional(readOnly=true)
@@ -94,11 +95,13 @@ public class IntentService {
 	 * @param id 应用的id
 	 * @return
 	 */
-	public Object getIntentList(String name,Integer id) {
+	public Object getIntentList(PageQuery query,Integer id) {
 		//TODO 优化
 		Map<String,Object> data = new HashMap<String,Object>();
-		List<Map<String,Object>> list = intentDao.getIntentList(name,id);
+		List<Map<String,Object>> list = intentDao.getIntentList(query,id);
+		
 		data.put("list", list);
+		data.put("total",intentDao.getIntentCount(query,id));
 		return data;
 	}
 	/**

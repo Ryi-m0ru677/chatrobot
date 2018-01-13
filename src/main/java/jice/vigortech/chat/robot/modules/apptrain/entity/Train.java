@@ -2,6 +2,8 @@ package jice.vigortech.chat.robot.modules.apptrain.entity;
 
 import java.io.Serializable;
 
+import jice.vigortech.chat.robot.modules.user.entity.User;
+
 public class Train  implements Serializable{
 
 	/**
@@ -14,7 +16,7 @@ public class Train  implements Serializable{
 	private String trainDate;
 	private String name;
 	private String local;
-	private Integer createBy;
+	private User createBy;
 	private Integer delFlag;
 	public Integer getId() {
 		return id;
@@ -52,11 +54,12 @@ public class Train  implements Serializable{
 	public void setDelFlag(Integer delFlag) {
 		this.delFlag = delFlag;
 	}
-	public Integer getCreateBy() {
+	public User getCreateBy() {
 		return createBy;
 	}
-	public void setCreateBy(Integer createBy) {
+	public void setCreateBy(User createBy) {
 		this.createBy = createBy;
 	}
+	
 	
 }

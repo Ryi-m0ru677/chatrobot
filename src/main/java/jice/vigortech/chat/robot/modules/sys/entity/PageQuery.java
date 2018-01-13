@@ -3,49 +3,63 @@ package jice.vigortech.chat.robot.modules.sys.entity;
 public class PageQuery {
 
 	private String name;
+	
 	private String sql;
-	private Integer pageNO;
-	private Integer rowNo;
-	private Integer pageSize = 10;
-
+	private String date;
+	
+	private int pageNo;
+	private int rowNo;
+	private int pageSize = 20;
+	
 	public String getName() {
+		
 		return name;
 	}
-
 	public void setName(String name) {
 		this.name = name;
 	}
-
+	
+	
+	public String getDate() {
+		return date;
+	}
+	public void setDate(String date) {
+		this.date = date;
+	}
+	
 	public String getSql() {
 		return sql;
 	}
-
 	public void setSql(String sql) {
 		this.sql = sql;
 	}
-
-	public Integer getPageNO() {
-		return pageNO;
+	
+	
+	
+	public int getPageNo() {
+		if(pageNo <= 0) {
+			pageNo = 1;
+		}
+		return pageNo;
 	}
-
-	public void setPageNO(Integer pageNO) {
-		this.pageNO = pageNO;
+	public void setPageNo(int pageNo) {
+		this.pageNo = pageNo;
 	}
-
-	public Integer getRowNo() {
-		return rowNo;
-	}
-
-	public void setRowNo(Integer rowNo) {
-		this.rowNo = rowNo;
-	}
-
-	public Integer getPageSize() {
+	public int getPageSize() {
+		if(pageSize <= 0) {
+			pageSize = 20;
+		}
 		return pageSize;
 	}
-
-	public void setPageSize(Integer pageSize) {
+	public void setPageSize(int pageSize) {
 		this.pageSize = pageSize;
 	}
-
+	public int getRowNo() {
+		rowNo = (getPageNo() - 1) * getPageSize();
+		return rowNo;
+	}
+	public void setRowNo(int rowNo) {
+		this.rowNo = rowNo;
+	}
+	
 }

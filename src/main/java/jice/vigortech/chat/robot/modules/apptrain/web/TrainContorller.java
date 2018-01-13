@@ -10,6 +10,7 @@ import jice.vigortech.chat.robot.common.constants.ResultCode;
 import jice.vigortech.chat.robot.common.constants.SysConstants;
 import jice.vigortech.chat.robot.common.model.web.BaseController;
 import jice.vigortech.chat.robot.modules.apptrain.service.TrainService;
+import jice.vigortech.chat.robot.modules.sys.entity.PageQuery;
 @RestController
 @RequestMapping(path=SysConstants.SYS_URL+"/train", method={RequestMethod.POST})
 public class TrainContorller extends BaseController {
@@ -29,8 +30,8 @@ public class TrainContorller extends BaseController {
 	}
 	
 	@RequestMapping("/list")
-	public String getTrainList(@Param("id")Integer id){
-		data  = trainService.getTrainList(id);
+	public String getTrainList(PageQuery query,@Param("id")Integer id){
+		data  = trainService.getTrainList(query,id);
 		if(data instanceof ResultCode){
 			resCode=(ResultCode) data;
 			data=null;

@@ -18,7 +18,7 @@ public class DictTest {
 	DictDao dictDao;
 	@Test
 	public void getDictList(){
-		System.out.println(dictDao.getDicList("", 23));
+		//System.out.println(dictDao.getDicList("", 23));
 	}
 	@Test
 	public void addDict(){
@@ -37,6 +37,6 @@ public class DictTest {
 			dictDao.insertDictWord(synon);
 		}
 			
-		System.out.println(dictDao.getDicList("", 23));
+		//System.out.println(dictDao.getDicList("", 23));
 	}
 }

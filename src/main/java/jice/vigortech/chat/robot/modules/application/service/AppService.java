@@ -16,6 +16,7 @@ import jice.vigortech.chat.robot.modules.dicts.dao.DictDao;
 import jice.vigortech.chat.robot.modules.dicts.entity.Dicts;
 import jice.vigortech.chat.robot.modules.intents.dao.IntentDao;
 import jice.vigortech.chat.robot.modules.intents.entity.Intents;
+import jice.vigortech.chat.robot.modules.sys.entity.PageQuery;
 import jice.vigortech.chat.robot.modules.user.entity.User;
 
 @Service
@@ -76,7 +77,7 @@ public class AppService /*extends BaseService*/{
 				if(user==null){
 					return ResultCode.OPERATION_NOT_PERMITTED;
 				}
-				app.setCreateBy(user.getId());
+				app.setCreateBy(user);
 				appDao.insertApp(app);
 				return ResultCode.OPERATION_SUCCESSED;
 			} catch (Exception e) {
@@ -100,8 +101,8 @@ public class AppService /*extends BaseService*/{
 	 * 
 	 * @return appList
 	 */
-	public Object getAppList(String name) {
-		String sql = null;
+	public Object getAppList(PageQuery query) {
+		
 		//TODO 权限的校验
 		/*User user = SecurityUtils.getCurrentUser();
 		if(user==null){
@@ -111,9 +112,11 @@ public class AppService /*extends BaseService*/{
 			sql = String.format(SysConstants.SYS_SQL, user.getId());
 		}*/
 		Map<String, Object> data = new HashMap<String, Object>();
-		List<Map<String, Object>> list = appDao.getAllAppList(name,sql);
+		List<Map<String, Object>> list = appDao.getAllAppList(query);
 		// 总数，余数
+		
 		data.put("list", list);
+		data.put("total",appDao.getAppCount(query));
 		return data;
 	}
 
