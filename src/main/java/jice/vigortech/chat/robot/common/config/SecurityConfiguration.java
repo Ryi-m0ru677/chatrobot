@@ -15,7 +15,7 @@ import org.springframework.security.web.access.ExceptionTranslationFilter;
 import jice.vigortech.chat.robot.common.constants.SysConstants;
 import jice.vigortech.chat.robot.common.security.LoginUserDetailsService;
 import jice.vigortech.chat.robot.common.security.SecurityInterceptor;
-import jice.vigortech.chat.robot.modules.sys.web.LoginController;
+import jice.vigortech.chat.robot.modules.sys.system.web.LoginController;
 
 @Configuration
 @EnableGlobalMethodSecurity(prePostEnabled = true)

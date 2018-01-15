@@ -14,7 +14,7 @@ import org.apache.ibatis.annotations.Update;
 import jice.vigortech.chat.robot.modules.mservices.entity.Iattribute;
 import jice.vigortech.chat.robot.modules.mservices.entity.MicService;
 import jice.vigortech.chat.robot.modules.mservices.entity.Minterface;
-import jice.vigortech.chat.robot.modules.sys.entity.PageQuery;
+import jice.vigortech.chat.robot.modules.sys.system.entity.PageQuery;
 
 @Mapper
 public interface MSerivceDao {

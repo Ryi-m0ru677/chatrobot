@@ -17,6 +17,15 @@ public class Office extends BaseEntity implements Serializable {
 	/*private String grade;*/
 	private Office parent; // 父级编号
 	private String parentIds; // 所有父级编号
+	
+	
+	
+	
+	public Office(Integer id) {
+		super();
+		this.id = id;
+	}
+
 	private List<String> childDeptList;// 快速添加子部门
 
 	public Integer getParent() {

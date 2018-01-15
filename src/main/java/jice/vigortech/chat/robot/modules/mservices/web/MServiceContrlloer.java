@@ -11,7 +11,7 @@ import jice.vigortech.chat.robot.common.constants.SysConstants;
 import jice.vigortech.chat.robot.common.model.web.BaseController;
 import jice.vigortech.chat.robot.modules.mservices.entity.MicService;
 import jice.vigortech.chat.robot.modules.mservices.service.MServiceService;
-import jice.vigortech.chat.robot.modules.sys.entity.PageQuery;
+import jice.vigortech.chat.robot.modules.sys.system.entity.PageQuery;
 @RestController
 @RequestMapping(path=SysConstants.SYS_URL+"/mic_service", method={RequestMethod.POST})
 public class MServiceContrlloer extends BaseController {

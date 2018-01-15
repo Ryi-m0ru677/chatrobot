@@ -1,4 +1,4 @@
-package jice.vigortech.chat.robot.modules.sys.entity;
+package jice.vigortech.chat.robot.modules.sys.system.entity;
 
 public class PageQuery {
 

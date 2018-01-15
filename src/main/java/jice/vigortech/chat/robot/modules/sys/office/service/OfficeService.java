@@ -10,9 +10,9 @@ import org.springframework.transaction.annotation.Transactional;
 
 import jice.vigortech.chat.robot.common.constants.ResultCode;
 import jice.vigortech.chat.robot.common.util.SecurityUtils;
-import jice.vigortech.chat.robot.modules.sys.entity.PageQuery;
 import jice.vigortech.chat.robot.modules.sys.office.dao.OfficeDao;
 import jice.vigortech.chat.robot.modules.sys.office.entity.Office;
+import jice.vigortech.chat.robot.modules.sys.system.entity.PageQuery;
 
 @Service
 @Transactional(readOnly=true,rollbackFor=Exception.class)

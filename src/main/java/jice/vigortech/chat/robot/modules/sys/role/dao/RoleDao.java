@@ -9,24 +9,26 @@ import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
 import org.apache.ibatis.annotations.Update;
 
-import jice.vigortech.chat.robot.modules.sys.entity.PageQuery;
 import jice.vigortech.chat.robot.modules.sys.role.entity.Role;
+import jice.vigortech.chat.robot.modules.sys.system.entity.PageQuery;
 
 @Mapper
 public interface RoleDao {
 	
 	@Select("<script>"
-			+ "select id,`name`,enname,data_scope dateScope, create_by createBy, "
-			+ "create_date createDate,update_date updateDate "
-			+ "from sys_role "
-			+ "where del_flag=0 "
+			+ "select a.id,a.name,a.enname,a.data_scope dateScope, a.create_by createBy, "
+			+ "a.create_date createDate,a.update_date updateDate "
+			+ "from sys_role a"
+			+ "LEFT JOIN sys_user uy ON uy.name=a.create_by "
+			+ "LEFT JOIN sys_office oy ON oy.id = uy.office_id "
+			+ "where del_flag=0 ${sql} "
 			+ "<if test=\"name != null and name != ''\">"
-			+ "and name like concat('%', #{name}, '%') "
+			+ "and a.name like concat('%', #{name}, '%') "
 			+ "</if> "
 			+ "<if test=\"date != null and date != ''\">"
-			+ "and update_date like concat('%', #{date}, '%') "
+			+ "and a.update_date like concat('%', #{date}, '%') "
 			+ "</if> "
-			+ "order by update_date desc "
+			+ "order by a.update_date desc "
 			+ "limit ${rowNo}, ${pageSize} "
 			+ "</script>")
 	List<Map<String, Object>> getRoleList(PageQuery query);
@@ -61,5 +63,10 @@ public interface RoleDao {
 			+ "date_scope=#{dateScope},update_date=#{updateDateString} "
 			+ "where id=#{id}")
 	int updateRole(Role role);
+	
+	@Select("select id,name,enname enName,data_scope dataScope "
+			+ "from sys_role where del_flag=0 and id in "
+			+ "(SELECT role_id rid from sys_user_role where user_id =${id}) ")
+	List<Role> getRoleByUser(@Param("id")Integer id);
 
 }

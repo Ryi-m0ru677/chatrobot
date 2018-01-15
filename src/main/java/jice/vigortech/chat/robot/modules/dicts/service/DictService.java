@@ -12,7 +12,7 @@ import jice.vigortech.chat.robot.common.constants.ResultCode;
 import jice.vigortech.chat.robot.modules.dicts.dao.DictDao;
 import jice.vigortech.chat.robot.modules.dicts.entity.Dicts;
 import jice.vigortech.chat.robot.modules.dicts.entity.Synonymy;
-import jice.vigortech.chat.robot.modules.sys.entity.PageQuery;
+import jice.vigortech.chat.robot.modules.sys.system.entity.PageQuery;
 
 @Service
 @Transactional(readOnly=true)

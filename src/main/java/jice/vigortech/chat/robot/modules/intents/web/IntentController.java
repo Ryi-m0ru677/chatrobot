@@ -14,7 +14,7 @@ import jice.vigortech.chat.robot.common.constants.SysConstants;
 import jice.vigortech.chat.robot.common.model.web.BaseController;
 import jice.vigortech.chat.robot.modules.intents.entity.Intents;
 import jice.vigortech.chat.robot.modules.intents.service.IntentService;
-import jice.vigortech.chat.robot.modules.sys.entity.PageQuery;
+import jice.vigortech.chat.robot.modules.sys.system.entity.PageQuery;
 
 @RestController
 @RequestMapping(path=SysConstants.SYS_URL+"/intent",method={RequestMethod.POST})

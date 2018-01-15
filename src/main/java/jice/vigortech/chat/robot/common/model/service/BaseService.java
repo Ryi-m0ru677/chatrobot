@@ -9,14 +9,14 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import jice.vigortech.chat.robot.common.util.SecurityUtils;
 import jice.vigortech.chat.robot.modules.sys.role.entity.Role;
 import jice.vigortech.chat.robot.modules.user.entity.User;
 
 @Service
 @Transactional(readOnly = true)
 public abstract class BaseService {
-	protected User user = SecurityUtils.getCurrentUser();
+	
+	//protected User user = SecurityUtils.getCurrentUser();
 	
 	/**
 	 * 日志对象
@@ -40,13 +40,10 @@ public abstract class BaseService {
 		// 超级管理员，跳过权限过滤
 		if (!user.getUsername().equalsIgnoreCase("ADMIN")){
 			boolean isDataScopeAll = false;
-			for (Role r : user.getRoleList()){
+			for (Role r : user.getRoleList(user.getId())){
 				for (String oa : StringUtils.split(officeAlias, ",")){
 					if (!dataScope.contains(r.getDataScope()) && StringUtils.isNotBlank(oa)){
-						if (Role.DATA_SCOPE_ALL.equals(r.getDataScope())){
-							isDataScopeAll = true;
-						}
-						else if (Role.DATA_SCOPE_COMPANY.equals(r.getDataScope())){
+						if (Role.DATA_SCOPE_COMPANY.equals(r.getDataScope())){
 							sqlString.append(" OR " + oa + ".id = '" + user.getCompany().getId() + "'");
 							// 包括本公司下的部门 （type=1:公司；type=2：部门）
 							sqlString.append(" OR (" + oa + ".parent_id = '" + user.getCompany().getId() + "' AND " + oa + ".type = '2')");

@@ -12,6 +12,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
+import jice.vigortech.chat.robot.modules.sys.role.entity.Role;
 import jice.vigortech.chat.robot.modules.user.dao.UserDao;
 
 
@@ -24,13 +25,14 @@ public class LoginUserDetailsService implements UserDetailsService{
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 		jice.vigortech.chat.robot.modules.user.entity.User user = userDao.getUserByUserName(username);
 		if(user != null){
-			return new User(user.getUsername(),user.getPassword(),true, true,true,true,getAuthority(user.getId(),user.getRole()));
+			//return new User(user.getUsername(),user.getPassword(),true, true,true,true,getAuthority(user.getId(),user.getRole()));
+			return new User(user.getUsername(),user.getPassword(),true, true,true,true,getAuthority(user.getId(),user.getRoleList(user.getId())));
 		}else{
 			throw new UsernameNotFoundException(username);
 		}
 	}
 	
-	private List<GrantedAuthority> getAuthority(Integer id,String userRole){
+	/*private List<GrantedAuthority> getAuthority(Integer id,String userRole){
 		List<GrantedAuthority> auths = new ArrayList<GrantedAuthority>();
 		List<String> authKeys = null;
 		if(userRole.equalsIgnoreCase("sys_admin")){
@@ -40,6 +42,21 @@ public class LoginUserDetailsService implements UserDetailsService{
 		}
 		for (String keys : authKeys) {
 			auths.add(new SimpleGrantedAuthority(keys));
+		}
+		return auths;
+	}*/
+	private List<GrantedAuthority> getAuthority(Integer id,List<Role> list){
+		List<GrantedAuthority> auths = new ArrayList<GrantedAuthority>();
+		List<String> authKeys = null;
+		for (Role role : list) {
+			if(role.getEnName().equalsIgnoreCase("sys_admin")){
+				authKeys = userDao.getSuperAuthRole();
+			}else{
+				authKeys = userDao.getAuthRoleById(id);
+			}
+			for (String keys : authKeys) {
+				auths.add(new SimpleGrantedAuthority(keys));
+			}
 		}
 		return auths;
 	}

@@ -10,7 +10,7 @@ import org.apache.ibatis.annotations.Select;
 import org.apache.ibatis.annotations.Update;
 
 import jice.vigortech.chat.robot.modules.application.entity.Application;
-import jice.vigortech.chat.robot.modules.sys.entity.PageQuery;
+import jice.vigortech.chat.robot.modules.sys.system.entity.PageQuery;
 
 @Mapper
 public interface AppDao {

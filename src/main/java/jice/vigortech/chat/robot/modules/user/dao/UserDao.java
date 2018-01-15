@@ -10,10 +10,12 @@ import org.apache.ibatis.annotations.Select;
 import org.apache.ibatis.annotations.SelectKey;
 import org.apache.ibatis.annotations.Update;
 
+import jice.vigortech.chat.robot.modules.sys.system.entity.PageQuery;
 import jice.vigortech.chat.robot.modules.user.entity.User;
 @Mapper
 public interface UserDao {
-	@Select("select `name` username, `password` password, role role, id id "
+	@Select("select `name` username, `password` password, role role, id id, "
+			+ "company_id companyid,office_id officeid "
 			+ "from sys_user where del_flag=0 "
 			+ "and name=#{name} "
 			)
@@ -63,11 +65,33 @@ public interface UserDao {
 	int deleteUserById(@Param("id")Integer id);
 	
 	@Select("<script>"
-			+ "select id, name username,phone,email,update_date updateDate, create_date createDate from sys_user where del_flag=0 "
-			+ "<if test=\"name!=null and name!=''\">"
-			+ "and name like concat('%',#{name},'%') "
-			+ "</if>"
-			+ "order by id"
+			+ "select a.id, a.name username,a.phone,a.email,a.update_date updateDate, a.create_date createDate "
+			+ ",a.create_by ,a.office_id "
+			+ "from sys_user a "
+			+ "LEFT JOIN sys_office oy ON oy.id = a.office_id "
+			+ "where a.del_flag=0 ${sql} "
+			+ "<if test=\"name != null and name != ''\">"
+			+ "and a.name like concat('%', #{name}, '%') "
+			+ "</if> "
+			+ "<if test=\"date != null and date != ''\">"
+			+ "and a.update_date like concat('%', #{date}, '%') "
+			+ "</if> "
+			+ "order by a.update_date desc "
+			+ "limit ${rowNo}, ${pageSize} "
 			+ "</script>")
-	List<Map<String, Object>> getUserList(@Param("name")String name);
+	List<Map<String, Object>> getUserList(PageQuery query);
+	
+	@Select("<script>"
+			+ "select count(1) "
+			+ "from sys_user a "
+			+ "LEFT JOIN sys_office oy ON oy.id = a.office_id "
+			+ "where a.del_flag=0 ${sql} "
+			+ "<if test=\"name != null and name != ''\">"
+			+ "and a.name like concat('%', #{name}, '%') "
+			+ "</if> "
+			+ "<if test=\"date != null and date != ''\">"
+			+ "and a.update_date like concat('%', #{date}, '%') "
+			+ "</if> "
+			+ "</script>")
+	int getUserCount(PageQuery query);
 }

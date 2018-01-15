@@ -9,17 +9,19 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import jice.vigortech.chat.robot.common.constants.ResultCode;
+import jice.vigortech.chat.robot.common.model.service.BaseService;
 import jice.vigortech.chat.robot.common.util.SecurityUtils;
-import jice.vigortech.chat.robot.modules.sys.entity.PageQuery;
 import jice.vigortech.chat.robot.modules.sys.role.dao.RoleDao;
 import jice.vigortech.chat.robot.modules.sys.role.entity.Role;
+import jice.vigortech.chat.robot.modules.sys.system.entity.PageQuery;
 
 @Service
 @Transactional(readOnly=true,rollbackFor=Exception.class)
-public class RoleService {
+public class RoleService extends BaseService{
 
 	@Autowired
 	RoleDao roleDao;
+	
 	
 	/**
 	 * 获取角色列表
@@ -31,6 +33,7 @@ public class RoleService {
 		List<Map<String,Object>> list = null;
 		int total = 0;
 		try {
+			query.setSql(super.dataScopeFilter(SecurityUtils.getCurrentUser(), "oy", "uy"));
 			list = roleDao.getRoleList(query);
 			total = roleDao.getRoleCount(query);
 			data.put("roleList", list);

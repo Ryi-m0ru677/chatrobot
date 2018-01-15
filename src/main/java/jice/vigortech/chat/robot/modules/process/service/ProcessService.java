@@ -12,7 +12,7 @@ import jice.vigortech.chat.robot.common.constants.ResultCode;
 import jice.vigortech.chat.robot.common.util.SecurityUtils;
 import jice.vigortech.chat.robot.modules.process.dao.ProcessDao;
 import jice.vigortech.chat.robot.modules.process.entiry.Processes;
-import jice.vigortech.chat.robot.modules.sys.entity.PageQuery;
+import jice.vigortech.chat.robot.modules.sys.system.entity.PageQuery;
 import jice.vigortech.chat.robot.modules.user.entity.User;
 
 @Service

@@ -16,7 +16,7 @@ import jice.vigortech.chat.robot.modules.dicts.dao.DictDao;
 import jice.vigortech.chat.robot.modules.dicts.entity.Dicts;
 import jice.vigortech.chat.robot.modules.intents.dao.IntentDao;
 import jice.vigortech.chat.robot.modules.intents.entity.Intents;
-import jice.vigortech.chat.robot.modules.sys.entity.PageQuery;
+import jice.vigortech.chat.robot.modules.sys.system.entity.PageQuery;
 import jice.vigortech.chat.robot.modules.user.entity.User;
 
 @Service
@@ -81,6 +81,7 @@ public class AppService /*extends BaseService*/{
 				appDao.insertApp(app);
 				return ResultCode.OPERATION_SUCCESSED;
 			} catch (Exception e) {
+				e.printStackTrace();
 				return ResultCode.OPERATION_FAILED;
 			}
 		} else {

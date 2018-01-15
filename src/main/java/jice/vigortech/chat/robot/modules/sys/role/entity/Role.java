@@ -25,6 +25,14 @@ public class Role extends BaseEntity implements Serializable{
 	
 	
 	
+	public Role(Integer id, String enName, String name, String dataScope) {
+		super();
+		this.id = id;
+		this.enName = enName;
+		this.name = name;
+		this.dataScope = dataScope;
+	}
+
 	// 数据范围（1：所有数据；2：所在公司数据；3：所在部门数据；5：仅本人数据；9：按明细设置）
 	public static final String DATA_SCOPE_ALL = "1";
 	public static final String DATA_SCOPE_COMPANY = "2";

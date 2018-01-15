@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
 import jice.vigortech.chat.robot.common.constants.ResultCode;
 import jice.vigortech.chat.robot.common.constants.SysConstants;
 import jice.vigortech.chat.robot.common.model.web.BaseController;
+import jice.vigortech.chat.robot.modules.sys.system.entity.PageQuery;
 import jice.vigortech.chat.robot.modules.user.entity.User;
 import jice.vigortech.chat.robot.modules.user.service.UserService;
 @RestController
@@ -21,8 +22,12 @@ public class UserController extends BaseController{
 	UserService userService;
 	
 	@RequestMapping("/list")
-	public String getUserList(@RequestParam("name")String name){
-		data = userService.getUserList(name);
+	public String getUserList(PageQuery query){
+		data = userService.getUserList(query);
+		if(data instanceof ResultCode){
+			resCode = (ResultCode) data;
+			data = null;
+		}
 		resCode = ResultCode.OPERATION_SUCCESSED;
 		return Result();
 	}
@@ -37,6 +42,7 @@ public class UserController extends BaseController{
 				resCode = (ResultCode) data;
 				data=null;
 			}
+			resCode = ResultCode.OPERATION_SUCCESSED;
 		}
 		return Result();
 	}

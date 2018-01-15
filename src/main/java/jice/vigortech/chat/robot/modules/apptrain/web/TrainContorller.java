@@ -10,7 +10,7 @@ import jice.vigortech.chat.robot.common.constants.ResultCode;
 import jice.vigortech.chat.robot.common.constants.SysConstants;
 import jice.vigortech.chat.robot.common.model.web.BaseController;
 import jice.vigortech.chat.robot.modules.apptrain.service.TrainService;
-import jice.vigortech.chat.robot.modules.sys.entity.PageQuery;
+import jice.vigortech.chat.robot.modules.sys.system.entity.PageQuery;
 @RestController
 @RequestMapping(path=SysConstants.SYS_URL+"/train", method={RequestMethod.POST})
 public class TrainContorller extends BaseController {

@@ -11,7 +11,7 @@ import org.apache.ibatis.annotations.SelectKey;
 import org.apache.ibatis.annotations.Update;
 
 import jice.vigortech.chat.robot.modules.process.entiry.Processes;
-import jice.vigortech.chat.robot.modules.sys.entity.PageQuery;
+import jice.vigortech.chat.robot.modules.sys.system.entity.PageQuery;
 
 @Mapper
 public interface ProcessDao {

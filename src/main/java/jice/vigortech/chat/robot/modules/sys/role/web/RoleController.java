@@ -8,9 +8,9 @@ import org.springframework.web.bind.annotation.RestController;
 import jice.vigortech.chat.robot.common.constants.ResultCode;
 import jice.vigortech.chat.robot.common.constants.SysConstants;
 import jice.vigortech.chat.robot.common.model.web.BaseController;
-import jice.vigortech.chat.robot.modules.sys.entity.PageQuery;
 import jice.vigortech.chat.robot.modules.sys.role.entity.Role;
 import jice.vigortech.chat.robot.modules.sys.role.service.RoleService;
+import jice.vigortech.chat.robot.modules.sys.system.entity.PageQuery;
 @RestController
 @RequestMapping(path=SysConstants.SYS_URL+"/role", method={RequestMethod.POST})
 public class RoleController extends BaseController {

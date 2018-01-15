@@ -12,7 +12,7 @@ import org.apache.ibatis.annotations.Update;
 
 import jice.vigortech.chat.robot.modules.dicts.entity.Dicts;
 import jice.vigortech.chat.robot.modules.dicts.entity.Synonymy;
-import jice.vigortech.chat.robot.modules.sys.entity.PageQuery;
+import jice.vigortech.chat.robot.modules.sys.system.entity.PageQuery;
 
 @Mapper
 public interface DictDao {

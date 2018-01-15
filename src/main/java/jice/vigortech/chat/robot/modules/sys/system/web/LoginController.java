@@ -1,4 +1,4 @@
-package jice.vigortech.chat.robot.modules.sys.web;
+package jice.vigortech.chat.robot.modules.sys.system.web;
 
 import java.io.IOException;
 
@@ -75,6 +75,10 @@ public class LoginController extends BaseController implements LogoutSuccessHand
 		String username = request.getParameter("username");
 		System.out.println(username);
 		data = userService.getUserTokenByUserName(username);
+		if(data instanceof ResultCode){
+			resCode = ResultCode.OPERATION_FAILED;
+			data = null;
+		}
 		resCode = ResultCode.OPERATION_SUCCESSED;
 		CorsHandler.addCorsMapping(response);
 		writeResponse(response);	

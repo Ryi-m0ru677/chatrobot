@@ -20,7 +20,7 @@ import jice.vigortech.chat.robot.common.util.SecurityUtils;
 import jice.vigortech.chat.robot.modules.application.dao.AppDao;
 import jice.vigortech.chat.robot.modules.apptrain.dao.TrainDao;
 import jice.vigortech.chat.robot.modules.apptrain.entity.Train;
-import jice.vigortech.chat.robot.modules.sys.entity.PageQuery;
+import jice.vigortech.chat.robot.modules.sys.system.entity.PageQuery;
 
 @Service
 @Transactional(readOnly=true)
