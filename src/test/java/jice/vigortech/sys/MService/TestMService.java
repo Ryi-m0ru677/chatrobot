@@ -17,7 +17,7 @@ public class TestMService {
 	
 	@Autowired
 	MSerivceDao mdao; 
-	@Test
+	/*@Test
 	public void testSave(){
 		MicService temp = new MicService();
 		temp.setName("sdssd");
@@ -26,5 +26,5 @@ public class TestMService {
 		temp.setDescribe("kjklhjk");
 		
 		Assert.assertTrue("haha", mdao.saveMicService(temp)>0);
-	}
+	}*/
 }

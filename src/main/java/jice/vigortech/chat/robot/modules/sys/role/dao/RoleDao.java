@@ -3,10 +3,12 @@ package jice.vigortech.chat.robot.modules.sys.role.dao;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.ibatis.annotations.Delete;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.SelectKey;
 import org.apache.ibatis.annotations.Update;
 
 import jice.vigortech.chat.robot.modules.sys.role.entity.Role;
@@ -57,7 +59,12 @@ public interface RoleDao {
 	
 	@Insert("insert into sys_role(`name`,enname,data_scope,create_by,create_date,update_date) "
 			+ "values(#{name},#{enName},#{dateScope},#{createBy.username},#{updateDateString},#{updateDateString})")
+	@SelectKey(before = false, keyProperty = "id", resultType = Integer.class, statement = { "select last_insert_id()" })
 	int InsertRole(Role role);
+
+	@Insert("insert into sys_role_office(role_id,office_id) "
+			+ "values(${roleId},${officeId})")
+	int insert(@Param("officeId")Integer id,@Param("roleId") Integer id2);
 
 	@Update("update sys_role set name=#{name},enname=#{enName}, "
 			+ "date_scope=#{dateScope},update_date=#{updateDateString} "
@@ -68,5 +75,9 @@ public interface RoleDao {
 			+ "from sys_role where del_flag=0 and id in "
 			+ "(SELECT role_id rid from sys_user_role where user_id =${id}) ")
 	List<Role> getRoleByUser(@Param("id")Integer id);
+
+	@Delete("delete from sys_role_office where role_id=${id}")
+	int deleteOfficeByRoleId(@Param("id")Integer id);
+	
 
 }

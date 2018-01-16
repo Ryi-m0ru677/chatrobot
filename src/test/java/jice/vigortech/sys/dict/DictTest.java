@@ -16,7 +16,7 @@ public class DictTest {
 
 	@Autowired
 	DictDao dictDao;
-	@Test
+	/*@Test
 	public void getDictList(){
 		//System.out.println(dictDao.getDicList("", 23));
 	}
@@ -38,5 +38,5 @@ public class DictTest {
 		}
 			
 		//System.out.println(dictDao.getDicList("", 23));
-	}
+	}*/
 }

@@ -1,6 +1,8 @@
 package jice.vigortech.chat.robot.common.model.service;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.commons.lang3.StringUtils;
 import org.assertj.core.util.Lists;
@@ -22,6 +24,9 @@ public abstract class BaseService {
 	 * 日志对象
 	 */
 	protected Logger logger = LoggerFactory.getLogger(getClass());
+	protected int total = 0;
+	protected Map<String,Object> data = new HashMap<String,Object>();
+	protected List<Map<String,Object>> list =null;
 
 	/**
 	 * 数据范围过滤

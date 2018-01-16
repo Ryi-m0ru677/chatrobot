@@ -23,7 +23,7 @@ public class UserTest {
 	@Autowired
 	UserService userService;
 	
-	@Test
+	/*@Test
 	public void testList(){
 		System.out.println(userDao.getUser());
 	}
@@ -75,5 +75,5 @@ public class UserTest {
 		System.out.println(user.getUsername());
 		
 		
-	}
+	}*/
 }

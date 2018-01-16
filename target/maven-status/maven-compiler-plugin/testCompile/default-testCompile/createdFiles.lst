@@ -1,0 +1,7 @@
+jice\vigortech\test\UserDaoTest.class
+jice\vigortech\sys\app\appDaoTest.class
+jice\vigortech\sys\MService\TestMService.class
+jice\vigortech\sys\process\ProecssTest.class
+jice\vigortech\sys\user\UserTest.class
+jice\vigortech\sys\intent\IntentTest.class
+jice\vigortech\sys\dict\DictTest.class

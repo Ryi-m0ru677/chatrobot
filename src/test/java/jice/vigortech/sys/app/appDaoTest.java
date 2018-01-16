@@ -21,7 +21,7 @@ public class appDaoTest {
 	@Autowired
 	AppService appService;
 
-	@Test
+	/*@Test
 	public void testUpdateApp() {
 		Application app =  appDao.findAppById(1);
 		System.out.println(app.getName());
@@ -51,5 +51,5 @@ public class appDaoTest {
 		app.setDefReply("哈哈");
 		ResultCode ll= appService.addApp(app);
 		Assert.assertTrue(ll==ResultCode.OPERATION_SUCCESSED);
-	}
+	}*/
 }

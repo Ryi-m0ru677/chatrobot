@@ -20,7 +20,7 @@ public class IntentTest {
 	IntentService intentService;
 	@Autowired
 	IntentDao intentDao;
-	@Test
+	/*@Test
 	public void insertIntentTest(){
 		Intents itemp = new Intents();
 		Slot atemp = new Slot();
@@ -52,6 +52,6 @@ public class IntentTest {
 	@Test
 	public void getIntentDetail(){
 		
-	}
+	}*/
 	
 }

@@ -22,7 +22,7 @@ public class ProecssTest {
 	@Autowired
 	ProcessDao proDao;
 	
-	@Test
+	/*@Test
 	public void addTest(){
 		ProcessBlock prob1 = new ProcessBlock();
 		ProcessBlock prob2 = new ProcessBlock();
@@ -53,5 +53,5 @@ public class ProecssTest {
 	public void getDetailTest(){
 		Map<String, Object> temp = proDao.getProDetailById(3);
 		System.out.println(JSON.toJSON(temp));
-	}
+	}*/
 }

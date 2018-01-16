@@ -65,7 +65,7 @@ public interface UserDao {
 	int deleteUserById(@Param("id")Integer id);
 	
 	@Select("<script>"
-			+ "select a.id, a.name username,a.phone,a.email,a.update_date updateDate, a.create_date createDate "
+			+ "select DISTINCT(a.id), a.name username,a.phone,a.email,a.update_date updateDate, a.create_date createDate "
 			+ ",a.create_by ,a.office_id "
 			+ "from sys_user a "
 			+ "LEFT JOIN sys_office oy ON oy.id = a.office_id "
@@ -82,7 +82,7 @@ public interface UserDao {
 	List<Map<String, Object>> getUserList(PageQuery query);
 	
 	@Select("<script>"
-			+ "select count(1) "
+			+ "select count(DISTINCT(a.id)) "
 			+ "from sys_user a "
 			+ "LEFT JOIN sys_office oy ON oy.id = a.office_id "
 			+ "where a.del_flag=0 ${sql} "

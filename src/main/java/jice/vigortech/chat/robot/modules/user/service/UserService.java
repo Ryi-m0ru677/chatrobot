@@ -1,7 +1,6 @@
 package jice.vigortech.chat.robot.modules.user.service;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,11 +29,9 @@ public class UserService extends BaseService{
 	 * @return
 	 */
 	public Object getUserList(PageQuery query) {
-		Map<String,Object> data = new HashMap<String,Object>();
-		int total = 0;
 		try {
 			query.setSql(super.dataScopeFilter(SecurityUtils.getCurrentUser(), "oy", null));
-			List<Map<String,Object>> list = userDao.getUserList(query);
+			list = userDao.getUserList(query);
 			total = userDao.getUserCount(query);
 			data.put("userList", list);
 			data.put("total", total);
@@ -59,7 +56,6 @@ public class UserService extends BaseService{
 					return ResultCode.USER_HAS_EXIST;
 				}
 				String password = Md5PasswordEncoderWithSalt.encodePassword(user.getPassword()); 
-				user.setRole("sys_user");
 				user.setPassword(password);
 				if(userDao.insertUser(user)>0){//用户注册后生成token并保存
 					Map<String,Object> userConfig = new HashMap<String,Object>();

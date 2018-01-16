@@ -15,9 +15,9 @@ public class UserDaoTest {
 
 	@Autowired
 	UserDao userDao;
-	@Test
+	/*@Test
 	public void testGetUserByName(){
 		System.out.println(userDao.getUser());
 		Assert.assertTrue(userDao.getUser().size()>0);
-	}
+	}*/
 }

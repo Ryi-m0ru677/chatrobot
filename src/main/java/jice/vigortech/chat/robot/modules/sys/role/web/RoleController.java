@@ -3,6 +3,7 @@ package jice.vigortech.chat.robot.modules.sys.role.web;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import jice.vigortech.chat.robot.common.constants.ResultCode;
@@ -46,6 +47,17 @@ public class RoleController extends BaseController {
 	@RequestMapping("/detail")
 	public String getRoleDetail(Integer id){
 		data = roleService.getRoleDetailById(id);
+		if(data instanceof ResultCode){
+			resCode = (ResultCode) data;
+			data = null;
+		}
+		resCode  = ResultCode.OPERATION_SUCCESSED;
+		return Result();
+	}
+	
+	@RequestMapping("/role_user_list")
+	public String getRoleUserList(@RequestParam("id")Integer id){
+		data = roleService.getRoleUserList(id);
 		if(data instanceof ResultCode){
 			resCode = (ResultCode) data;
 			data = null;

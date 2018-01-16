@@ -14,6 +14,7 @@ import com.alibaba.fastjson.JSON;
 
 import jice.vigortech.chat.robot.common.constants.ResultCode;
 import jice.vigortech.chat.robot.common.constants.SysConstants;
+import jice.vigortech.chat.robot.common.model.service.BaseService;
 import jice.vigortech.chat.robot.common.util.HttpHelper;
 import jice.vigortech.chat.robot.common.util.MySubstringUtil;
 import jice.vigortech.chat.robot.common.util.SecurityUtils;
@@ -24,7 +25,7 @@ import jice.vigortech.chat.robot.modules.sys.system.entity.PageQuery;
 
 @Service
 @Transactional(readOnly=true)
-public class TrainService {
+public class TrainService extends BaseService{
 	
 	@Autowired
 	AppDao appDao;
@@ -65,22 +66,18 @@ public class TrainService {
 		}
 	}
 	public Object getTrainList(PageQuery query, Integer id) {
-		String sql = query.getSql();
 		
-		Map<String,Object> data = new HashMap<String,Object>();
-		List<Map<String,Object>> list =null;
-		if(SecurityUtils.getCurrentUser().getRole().equalsIgnoreCase(SysConstants.SYS_USER)){
-			sql = sql+String.format(SysConstants.SYS_SQL, SecurityUtils.getCurrentUser().getId());
-		}else{
-			sql=null;
-		}
+		query.setSql(super.dataScopeFilter(SecurityUtils.getCurrentUser(), "oy", "uy"));
 		try {
 			if(id==null){
 				list = trainDao.getAllTrainAppList(query);
+				total = trainDao.getAllCount(query);
 			}else{
 				list = trainDao.getTrainAppList(id,query);
+				total = trainDao.getAllCountById(query,id);
 			}
 			 data.put("trainList", list);
+			 data.put("total", total);
 			 return data;
 		} catch (Exception e) {
 			e.printStackTrace();
