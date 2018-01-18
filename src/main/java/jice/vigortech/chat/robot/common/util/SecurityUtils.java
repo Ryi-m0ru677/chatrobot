@@ -10,8 +10,8 @@ import org.springframework.stereotype.Component;
 import jice.vigortech.chat.robot.modules.sys.office.entity.Office;
 import jice.vigortech.chat.robot.modules.sys.role.dao.RoleDao;
 import jice.vigortech.chat.robot.modules.sys.role.entity.Role;
-import jice.vigortech.chat.robot.modules.user.dao.UserDao;
-import jice.vigortech.chat.robot.modules.user.entity.User;
+import jice.vigortech.chat.robot.modules.sys.user.dao.UserDao;
+import jice.vigortech.chat.robot.modules.sys.user.entity.User;
 
 @Component
 public class SecurityUtils {
@@ -26,8 +26,13 @@ public class SecurityUtils {
 	}
 	
 	public static User getCurrentUser() {
-		
-		UserDetails principal = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		UserDetails principal = null;
+		try {
+			 principal = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		} catch (Exception e) {
+			e.printStackTrace();
+			return null;
+		}
 		if(principal == null) {
 			return null;
 		}
@@ -40,7 +45,7 @@ public class SecurityUtils {
 	
 	public static List<Role> getRoleListByUser(Integer id){
 		//List
-		System.out.println(roleDao.getRoleByUser(id));
+		//System.out.println(roleDao.getRoleByUser(id));
 		return roleDao.getRoleByUser(id);
 	}
 }

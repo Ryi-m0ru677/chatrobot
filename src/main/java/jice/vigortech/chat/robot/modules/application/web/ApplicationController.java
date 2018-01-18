@@ -31,8 +31,9 @@ public class ApplicationController extends BaseController{
 		if(data instanceof ResultCode){
 			resCode = (ResultCode) data;
 			data=null;
+		}else{
+			resCode = ResultCode.OPERATION_SUCCESSED;
 		}
-		resCode = ResultCode.OPERATION_SUCCESSED;
 		return Result();
 	}
 	@RequestMapping("/del")

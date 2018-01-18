@@ -33,31 +33,35 @@ public interface AppDao {
 	Application findAppById(@Param("id")Integer id);
 
 	@Select("<script>"
-			+ "select id id, name `name`,create_date createDate,update_date updateDate,create_by createBy "
-			+ "from robot_app where del_flag=0 ${sql} "
+			+ "select DISTINCT(a.id),a.name ,a.create_date createDate,a.update_date updateDate,a.create_by createBy "
+			+ "from robot_app a "
+			+ "LEFT JOIN sys_user uy ON uy.name=a.create_by "
+			+ "LEFT JOIN sys_office oy ON oy.id = uy.office_id "
+			+ "where a.del_flag=0 ${sql} "
 			+ "<if test=\"name != null and name != ''\">"
-			+ "and name like concat('%', #{name}, '%') "
+			+ "and a.name like concat('%', #{name}, '%') "
 			+ "</if> "
 			+ "<if test=\"date != null and date != ''\">"
-			+ "and update_date like concat('%', #{date}, '%') "
+			+ "and a.update_date like concat('%', #{date}, '%') "
 			+ "</if> "
-			+ "order by update_date "
+			+ "order by a.update_date desc "
 			+ "limit ${rowNo}, ${pageSize} "
-			+ "</script>"
-			)
+			+ "</script>")
 	List<Map<String, Object>> getAllAppList(PageQuery query);
 	
 	@Select("<script>"
-			+ "select count(1) "
-			+ "from robot_app where del_flag=0 ${sql} "
+			+ "select count(DISTINCT(a.id)) "
+			+ "from robot_app a "
+			+ "LEFT JOIN sys_user uy ON uy.name=a.create_by "
+			+ "LEFT JOIN sys_office oy ON oy.id = uy.office_id "
+			+ "where a.del_flag=0 ${sql} "
 			+ "<if test=\"name != null and name != ''\">"
-			+ "and name like concat('%', #{name}, '%') "
+			+ "and a.name like concat('%', #{name}, '%') "
 			+ "</if> "
 			+ "<if test=\"date != null and date != ''\">"
-			+ "and update_date like concat('%', #{date}, '%') "
+			+ "and a.update_date like concat('%', #{date}, '%') "
 			+ "</if> "
-			+ "</script>"
-			)
+			+ "</script>")
 	int getAppCount(PageQuery query);
 	
 	@Update("update robot_app set del_flag=1 where id = ${id}")
@@ -68,7 +72,7 @@ public interface AppDao {
 			+ "def_reply,storage,create_by,create_date,update_date ) "
 			+ "values( "
 			+ "#{name},#{isPrivate},#{describe},#{link},#{language},#{zone}, "
-			+ "#{clientToken},#{devToken},#{defReply},#{storage},#{createBy.name},#{createDateString}, "
+			+ "#{clientToken},#{devToken},#{defReply},#{storage},#{createBy.username},#{createDateString}, "
 			+ "#{updateDateString} ) "
 			)
 	Integer insertApp(Application app);

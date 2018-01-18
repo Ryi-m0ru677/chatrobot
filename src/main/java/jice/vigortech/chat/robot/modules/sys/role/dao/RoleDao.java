@@ -23,7 +23,7 @@ public interface RoleDao {
 			+ "from sys_role a"
 			+ "LEFT JOIN sys_user uy ON uy.name=a.create_by "
 			+ "LEFT JOIN sys_office oy ON oy.id = uy.office_id "
-			+ "where del_flag=0 ${sql} "
+			+ "where a.del_flag=0 ${sql} "
 			+ "<if test=\"name != null and name != ''\">"
 			+ "and a.name like concat('%', #{name}, '%') "
 			+ "</if> "
@@ -79,5 +79,22 @@ public interface RoleDao {
 	@Delete("delete from sys_role_office where role_id=${id}")
 	int deleteOfficeByRoleId(@Param("id")Integer id);
 	
+	@Select("select id,`name`,phone "
+			+ "company_id companyid,office_id officeid "
+			+ " from sys_user where id in ( "
+			+ "select user_id from sys_user_role where role_id=${id}) "
+			+ "")
+	List<Map<String, Object>> getRoleUserList(@Param("id")Integer id);
+	
+	@Insert("replace into sys_user_role (user_id,role_id) "
+			+ "values(${userId},${roleId}) ")
+	int addRoleUser(@Param("userId")Integer userId, @Param("roleId")Integer id);
+	
+	@Insert("replace into sys_user_role (theme_id,role_id) "
+			+ "values(${themeId},${roleId}) ")
+	int addRoleTheme(@Param("themeId")Integer themeId,@Param("roleId") Integer id);
 
+	@Insert("replace into sys_user_role (secret_id,role_id) "
+			+ "values(${secretId},${roleId}) ")
+	int addRoleSecret(@Param("secretId")Integer secretId,@Param("roleId") Integer id);
 }

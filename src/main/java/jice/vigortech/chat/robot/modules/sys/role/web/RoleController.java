@@ -25,8 +25,9 @@ public class RoleController extends BaseController {
 		if(data instanceof ResultCode){
 			resCode = (ResultCode) data;
 			data = null;
+		}else{
+			resCode = ResultCode.OPERATION_SUCCESSED;
 		}
-		resCode = ResultCode.OPERATION_SUCCESSED;
 		return Result();
 	}
 	
@@ -50,8 +51,9 @@ public class RoleController extends BaseController {
 		if(data instanceof ResultCode){
 			resCode = (ResultCode) data;
 			data = null;
+		}else{
+			resCode  = ResultCode.OPERATION_SUCCESSED;
 		}
-		resCode  = ResultCode.OPERATION_SUCCESSED;
 		return Result();
 	}
 	
@@ -61,8 +63,25 @@ public class RoleController extends BaseController {
 		if(data instanceof ResultCode){
 			resCode = (ResultCode) data;
 			data = null;
+		}else{
+			resCode  = ResultCode.OPERATION_SUCCESSED;
 		}
-		resCode  = ResultCode.OPERATION_SUCCESSED;
 		return Result();
 	}
+	
+	@RequestMapping("/role_add_user")
+	public String addRoleUser(@RequestParam("userIds")String userIds,@RequestParam("id") Integer id){
+		data = null;
+		resCode = roleService.addRoleUser(userIds,id);
+		return Result();
+	}
+	
+	@RequestMapping("/role_add_others")
+	public String addRoleTheme(@RequestParam("themeIds")String themeIds,@RequestParam("secretIds")String secretIds,@RequestParam("id") Integer id){
+		data = null;
+		resCode = roleService.addRoleThemeAndSecret(themeIds,id,secretIds);
+		return Result();
+	}
+	
+	
 }

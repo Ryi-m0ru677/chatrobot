@@ -13,7 +13,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import jice.vigortech.chat.robot.modules.sys.role.entity.Role;
-import jice.vigortech.chat.robot.modules.user.dao.UserDao;
+import jice.vigortech.chat.robot.modules.sys.user.dao.UserDao;
 
 
 @Service
@@ -23,7 +23,7 @@ public class LoginUserDetailsService implements UserDetailsService{
 	UserDao userDao ;
 	@Override
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-		jice.vigortech.chat.robot.modules.user.entity.User user = userDao.getUserByUserName(username);
+		jice.vigortech.chat.robot.modules.sys.user.entity.User user = userDao.getUserByUserName(username);
 		if(user != null){
 			//return new User(user.getUsername(),user.getPassword(),true, true,true,true,getAuthority(user.getId(),user.getRole()));
 			return new User(user.getUsername(),user.getPassword(),true, true,true,true,getAuthority(user.getId(),user.getRoleList(user.getId())));

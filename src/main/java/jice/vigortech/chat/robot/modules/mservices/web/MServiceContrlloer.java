@@ -18,7 +18,11 @@ public class MServiceContrlloer extends BaseController {
 
 	@Autowired
 	MServiceService mServiceService;
-	
+	/**
+	 * 获取微服务接口列表
+	 * @param query
+	 * @return
+	 */
 	@RequestMapping("/list")
 	public String getMicServiceList(PageQuery query){
 		data = mServiceService.getMicServiceList(query);
@@ -31,20 +35,28 @@ public class MServiceContrlloer extends BaseController {
 		return Result();
 	}
 	
+	/**
+	 * 添加/修改微服务
+	 * @param micService
+	 * @return
+	 */
 	@RequestMapping("/save")
 	public String addAndUpdateMicService(MicService micService){
-		
-		data=mServiceService.saveMicSerivice(micService);
-		resCode = ResultCode.OPERATION_SUCCESSED;
+		data=null;
+		resCode = mServiceService.saveMicSerivice(micService);
 		return Result();
 	}
 	
+	/**
+	 * 删除
+	 * @param id
+	 * @return
+	 */
+	
 	@RequestMapping("delete")
 	public String deleteMicService(@RequestParam("id")Integer id){
-		
 		data = null;
 		resCode = mServiceService.deleteMicServiceById(id);
 		return Result();
 	}
-	
 }

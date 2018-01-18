@@ -6,9 +6,9 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 
 @EnableScheduling
 @SpringBootApplication
-public class chatRobotAPP {
+public class ChatRobotAPP {
 	
 	public static void main(String[] args) {
-		SpringApplication.run(chatRobotAPP.class, args);
-	}
+		SpringApplication.run(ChatRobotAPP.class, args);
+	}	
 }

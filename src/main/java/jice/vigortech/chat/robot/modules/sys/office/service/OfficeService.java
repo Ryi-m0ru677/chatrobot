@@ -1,6 +1,5 @@
 package jice.vigortech.chat.robot.modules.sys.office.service;
 
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -9,6 +8,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import jice.vigortech.chat.robot.common.constants.ResultCode;
+import jice.vigortech.chat.robot.common.model.service.BaseService;
 import jice.vigortech.chat.robot.common.util.SecurityUtils;
 import jice.vigortech.chat.robot.modules.sys.office.dao.OfficeDao;
 import jice.vigortech.chat.robot.modules.sys.office.entity.Office;
@@ -16,7 +16,7 @@ import jice.vigortech.chat.robot.modules.sys.system.entity.PageQuery;
 
 @Service
 @Transactional(readOnly=true,rollbackFor=Exception.class)
-public class OfficeService {
+public class OfficeService extends BaseService{
 
 	@Autowired
 	OfficeDao officeDao;
@@ -27,12 +27,14 @@ public class OfficeService {
 	 * @return
 	 */
 	public Object getOfficeList(PageQuery query) {
-		Map<String,Object> data = new HashMap<String,Object>();
-		List<Map<String,Object>> list = null;
-		int total = 0;
+		
+		
 		try {
+			List<Map<String,Object>> officeAllList = officeDao.getAllOffice();;
 			list = officeDao.getOfficeList(query);
 			total = officeDao.getOfficeCount(query);
+			
+			data.put("list", officeAllList);
 			data.put("officeList", list);
 			data.put("total", total);
 			return data;
@@ -47,6 +49,7 @@ public class OfficeService {
 	 * @param id
 	 * @return
 	 */
+	@Transactional(readOnly=false,rollbackFor=Exception.class)
 	public ResultCode deleteOfficeById(Integer id) {
 		try {
 			Map<String,Object> temp = officeDao.getOfficeDetailById(id);
@@ -66,6 +69,7 @@ public class OfficeService {
 	 * @param office
 	 * @return
 	 */
+	@Transactional(readOnly=false,rollbackFor=Exception.class)
 	public ResultCode saveOrUpdateOffice(Office office) {
 		try {
 			if(office.getId()==null){
@@ -95,6 +99,21 @@ public class OfficeService {
 				return ResultCode.OFFICE_NOT_EXITS;
 			}
 			return temp ;
+		} catch (Exception e) {
+			e.printStackTrace();
+			return ResultCode.OPERATION_FAILED;
+		}
+	}
+	
+	/**
+	 * 获取所有的office
+	 * @return
+	 */
+	public Object getOfficeAllList() {
+		try {
+			list = officeDao.getAllOffice();
+			data.put("officeAllList", list); 
+			return data;
 		} catch (Exception e) {
 			e.printStackTrace();
 			return ResultCode.OPERATION_FAILED;

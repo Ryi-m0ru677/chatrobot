@@ -25,8 +25,9 @@ public class ProcessController extends BaseController {
 		if(data instanceof ResultCode){
 			resCode = (ResultCode) data;
 			data = null;
+		}else{
+			resCode = ResultCode.OPERATION_SUCCESSED;
 		}
-		resCode = ResultCode.OPERATION_SUCCESSED;
 		return Result();
 	}
 	
@@ -36,8 +37,9 @@ public class ProcessController extends BaseController {
 		if(data instanceof ResultCode){
 			resCode = (ResultCode) data;
 			data = null;
+		}else{
+			resCode = ResultCode.OPERATION_SUCCESSED;
 		}
-		resCode = ResultCode.OPERATION_SUCCESSED;
 		return Result();
 	}
 	

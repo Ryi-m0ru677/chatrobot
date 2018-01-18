@@ -60,5 +60,8 @@ public interface OfficeDao {
 			+ "#{name},#{type},#{parent},#{parentIds},#{createBy.username}, "
 			+ "#{updateDateString},#{updateDateString}")
 	int insertOffice(Office office);
+	
+	@Select("select id,`name`,type from sys_office where del_flag=0 order by id")
+	List<Map<String, Object>> getAllOffice();
 
 }

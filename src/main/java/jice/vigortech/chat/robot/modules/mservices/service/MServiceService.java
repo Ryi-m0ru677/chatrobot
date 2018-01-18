@@ -1,6 +1,5 @@
 package jice.vigortech.chat.robot.modules.mservices.service;
 
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -9,17 +8,18 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import jice.vigortech.chat.robot.common.constants.ResultCode;
+import jice.vigortech.chat.robot.common.model.service.BaseService;
 import jice.vigortech.chat.robot.common.util.SecurityUtils;
 import jice.vigortech.chat.robot.modules.mservices.dao.MSerivceDao;
 import jice.vigortech.chat.robot.modules.mservices.entity.Iattribute;
 import jice.vigortech.chat.robot.modules.mservices.entity.MicService;
 import jice.vigortech.chat.robot.modules.mservices.entity.Minterface;
 import jice.vigortech.chat.robot.modules.sys.system.entity.PageQuery;
-import jice.vigortech.chat.robot.modules.user.entity.User;
+import jice.vigortech.chat.robot.modules.sys.user.entity.User;
 
 @Service
 @Transactional(readOnly=true)
-public class MServiceService /*extends BaseService*/{
+public class MServiceService extends BaseService{
 
 	@Autowired
 	MSerivceDao mServiceDao;
@@ -29,10 +29,12 @@ public class MServiceService /*extends BaseService*/{
 	 * @return
 	 */
 	public Object getMicServiceList(PageQuery query) {
-		Map<String,Object> data = new HashMap<String,Object>();
-		List<Map<String,Object>> list = null;
-		int total = 0;
 		try {
+			User user = SecurityUtils.getCurrentUser();
+			if(user==null){
+				return ResultCode.SESSION_INVALID;
+			}
+			query.setSql(super.dataScopeFilter(user, "oy", "uy"));
 			list =  mServiceDao.getMicServiceList(query);
 			total =  mServiceDao.getMicServiceCount(query);
 			data.put("mServiceList", list);
@@ -49,30 +51,35 @@ public class MServiceService /*extends BaseService*/{
 	 * @return
 	 */
 	@Transactional(readOnly=false ,rollbackFor=Exception.class)
-	public Object saveMicSerivice(MicService micService) {
+	public ResultCode saveMicSerivice(MicService micService) {
 		User user = SecurityUtils.getCurrentUser();
 		if(user==null){
-			return ResultCode.OPERATION_NOT_PERMITTED;
+			return ResultCode.SESSION_INVALID;
 		}
 		if(micService.getId()==null){
 			//添加
 			try{
+				micService.setCreateBy(user);
 				save(micService);
 				return ResultCode.OPERATION_SUCCESSED;
 			}catch(Exception e){
 				e.printStackTrace();
 				return ResultCode.OPERATION_FAILED;
 			}
-			
 		}else{
 			//修改
-			if(mServiceDao.getMicServiceById(micService.getId())==null){
-				return ResultCode.MIC_NOT_EXIST;
+			try {
+				if(mServiceDao.getMicServiceById(micService.getId())==null){
+					return ResultCode.MIC_NOT_EXIST;
+				}
+				delete(micService.getId());
+				save(micService);
+				return ResultCode.OPERATION_SUCCESSED; 
+			}catch(Exception e){
+				e.printStackTrace();
+				return ResultCode.OPERATION_FAILED;
 			}
-			delete(micService.getId());
-			save(micService);
 		}
-		return null;
 	}
 	/**
 	 * 删除
@@ -81,10 +88,10 @@ public class MServiceService /*extends BaseService*/{
 	 */
 	@Transactional(readOnly=false ,rollbackFor=Exception.class)
 	public ResultCode deleteMicServiceById(Integer id) {
-		if(mServiceDao.getMicServiceById(id)==null){
-			return ResultCode.MIC_NOT_EXIST;
-		}
 		try {
+			if(mServiceDao.getMicServiceById(id)==null){
+				return ResultCode.MIC_NOT_EXIST;
+			}
 			delete(id);
 			mServiceDao.deleteMicService(id);
 			return ResultCode.OPERATION_SUCCESSED;

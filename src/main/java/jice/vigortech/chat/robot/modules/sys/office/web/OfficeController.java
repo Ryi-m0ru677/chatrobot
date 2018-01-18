@@ -29,6 +29,17 @@ public class OfficeController extends BaseController {
 		return Result();
 	}
 	
+	@RequestMapping("/all_list")
+	public String getOfficeList(){
+		data = officeService.getOfficeAllList();
+		if(data instanceof ResultCode){
+			resCode = (ResultCode) data;
+			data = null;
+		}
+		resCode = ResultCode.OPERATION_SUCCESSED;
+		return Result();
+	}
+	
 	@RequestMapping("/delete")
 	public String deleteOfficeById(Integer id){
 		data = null;

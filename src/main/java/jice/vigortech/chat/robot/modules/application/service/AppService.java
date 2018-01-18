@@ -1,6 +1,5 @@
 package jice.vigortech.chat.robot.modules.application.service;
 
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -9,6 +8,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import jice.vigortech.chat.robot.common.constants.ResultCode;
+import jice.vigortech.chat.robot.common.model.service.BaseService;
 import jice.vigortech.chat.robot.common.util.SecurityUtils;
 import jice.vigortech.chat.robot.modules.application.dao.AppDao;
 import jice.vigortech.chat.robot.modules.application.entity.Application;
@@ -17,11 +17,11 @@ import jice.vigortech.chat.robot.modules.dicts.entity.Dicts;
 import jice.vigortech.chat.robot.modules.intents.dao.IntentDao;
 import jice.vigortech.chat.robot.modules.intents.entity.Intents;
 import jice.vigortech.chat.robot.modules.sys.system.entity.PageQuery;
-import jice.vigortech.chat.robot.modules.user.entity.User;
+import jice.vigortech.chat.robot.modules.sys.user.entity.User;
 
 @Service
 @Transactional(readOnly=true)
-public class AppService /*extends BaseService*/{
+public class AppService extends BaseService{
 
 	@Autowired
 	AppDao appDao;
@@ -75,7 +75,7 @@ public class AppService /*extends BaseService*/{
 			try {
 				User user = SecurityUtils.getCurrentUser();
 				if(user==null){
-					return ResultCode.OPERATION_NOT_PERMITTED;
+					return ResultCode.SESSION_INVALID;
 				}
 				app.setCreateBy(user);
 				appDao.insertApp(app);
@@ -104,18 +104,12 @@ public class AppService /*extends BaseService*/{
 	 */
 	public Object getAppList(PageQuery query) {
 		
-		//TODO 权限的校验
-		/*User user = SecurityUtils.getCurrentUser();
+		User user = SecurityUtils.getCurrentUser();
 		if(user==null){
-			return ResultCode.OPERATION_NOT_PERMITTED;
+			return ResultCode.SESSION_INVALID;
 		}
-		if(user.getRole().equalsIgnoreCase(SysConstants.SYS_USER)){
-			sql = String.format(SysConstants.SYS_SQL, user.getId());
-		}*/
-		Map<String, Object> data = new HashMap<String, Object>();
-		List<Map<String, Object>> list = appDao.getAllAppList(query);
-		// 总数，余数
-		
+		query.setSql(super.dataScopeFilter(user, "oy", "uy"));
+		list = appDao.getAllAppList(query);
 		data.put("list", list);
 		data.put("total",appDao.getAppCount(query));
 		return data;

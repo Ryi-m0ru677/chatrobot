@@ -2,8 +2,6 @@ package jice.vigortech.chat.robot.common.model.entity;
 
 import java.io.Serializable;
 import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
 
 import org.hibernate.validator.constraints.Length;
 
@@ -11,7 +9,7 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import jice.vigortech.chat.robot.common.util.DateUtils;
-import jice.vigortech.chat.robot.modules.user.entity.User;
+import jice.vigortech.chat.robot.modules.sys.user.entity.User;
 
 public class BaseEntity implements Serializable {
 
@@ -32,7 +30,7 @@ public class BaseEntity implements Serializable {
 
 	protected String updateDateString;
 	
-	protected Map<String, String> sqlMap;
+	
 	
 
 	
@@ -99,7 +97,7 @@ public class BaseEntity implements Serializable {
 		this.delFlag = delFlag;
 	}
 	
-	public Map<String, String> getSqlMap() {
+	/*public Map<String, String> getSqlMap() {
 		if (sqlMap == null){
 			sqlMap = new HashMap<String,String>();
 		}
@@ -108,5 +106,5 @@ public class BaseEntity implements Serializable {
 
 	public void setSqlMap(Map<String, String> sqlMap) {
 		this.sqlMap = sqlMap;
-	}
+	}*/
 }

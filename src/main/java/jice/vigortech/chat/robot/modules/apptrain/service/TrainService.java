@@ -22,6 +22,7 @@ import jice.vigortech.chat.robot.modules.application.dao.AppDao;
 import jice.vigortech.chat.robot.modules.apptrain.dao.TrainDao;
 import jice.vigortech.chat.robot.modules.apptrain.entity.Train;
 import jice.vigortech.chat.robot.modules.sys.system.entity.PageQuery;
+import jice.vigortech.chat.robot.modules.sys.user.entity.User;
 
 @Service
 @Transactional(readOnly=true)
@@ -66,8 +67,11 @@ public class TrainService extends BaseService{
 		}
 	}
 	public Object getTrainList(PageQuery query, Integer id) {
-		
-		query.setSql(super.dataScopeFilter(SecurityUtils.getCurrentUser(), "oy", "uy"));
+		User user = SecurityUtils.getCurrentUser();
+		if(user==null){
+			return ResultCode.SESSION_INVALID;
+		}
+		query.setSql(super.dataScopeFilter(user, "oy", "uy"));
 		try {
 			if(id==null){
 				list = trainDao.getAllTrainAppList(query);

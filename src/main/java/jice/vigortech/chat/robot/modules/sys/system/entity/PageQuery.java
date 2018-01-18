@@ -6,10 +6,10 @@ public class PageQuery {
 	
 	private String sql;
 	private String date;
-	
+	private String dept;//部门
 	private int pageNo;
 	private int rowNo;
-	private int pageSize = 20;
+	private int pageSize = 10;
 	
 	public String getName() {
 		
@@ -61,5 +61,10 @@ public class PageQuery {
 	public void setRowNo(int rowNo) {
 		this.rowNo = rowNo;
 	}
-	
+	public String getDept() {
+		return dept;
+	}
+	public void setDept(String dept) {
+		this.dept = dept;
+	}
 }

@@ -2,7 +2,7 @@ package jice.vigortech.chat.robot.modules.apptrain.entity;
 
 import java.io.Serializable;
 
-import jice.vigortech.chat.robot.modules.user.entity.User;
+import jice.vigortech.chat.robot.modules.sys.user.entity.User;
 
 public class Train  implements Serializable{
 

@@ -1,7 +1,5 @@
 package jice.vigortech.chat.robot.modules.process.service;
 
-import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,15 +7,16 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import jice.vigortech.chat.robot.common.constants.ResultCode;
+import jice.vigortech.chat.robot.common.model.service.BaseService;
 import jice.vigortech.chat.robot.common.util.SecurityUtils;
 import jice.vigortech.chat.robot.modules.process.dao.ProcessDao;
 import jice.vigortech.chat.robot.modules.process.entiry.Processes;
 import jice.vigortech.chat.robot.modules.sys.system.entity.PageQuery;
-import jice.vigortech.chat.robot.modules.user.entity.User;
+import jice.vigortech.chat.robot.modules.sys.user.entity.User;
 
 @Service
 @Transactional(readOnly=true)
-public class ProcessService {
+public class ProcessService extends BaseService{
 	
 	@Autowired
 	ProcessDao proDao;
@@ -28,10 +27,12 @@ public class ProcessService {
 	 * @return
 	 */
 	public Object getProcessList(PageQuery query) {
-		Map<String,Object> data = new HashMap<String,Object>();
-		List<Map<String,Object>> list = null;
-		int total=0;
 		try {
+			User user = SecurityUtils.getCurrentUser();
+			if(user==null){
+				return ResultCode.SESSION_INVALID;
+			}
+			query.setSql(super.dataScopeFilter(user, "oy", "uy"));
 			list = proDao.getProcessList(query);
 			total = proDao.getProcessCount(query);
 			data.put("processList",list);
@@ -54,7 +55,6 @@ public class ProcessService {
 			if(temp==null){
 				return ResultCode.PROCESS_NOT_EXIST;
 			}
-			
 			return temp;
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -74,7 +74,7 @@ public class ProcessService {
 			try {
 				User user = SecurityUtils.getCurrentUser();
 				if(user==null){
-					return ResultCode.OPERATION_NOT_PERMITTED;
+					return ResultCode.SESSION_INVALID;
 				}
 				process.setCreateBy(user);
 				proDao.insertProcess(process);

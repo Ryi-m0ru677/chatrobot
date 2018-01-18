@@ -23,7 +23,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import jice.vigortech.chat.robot.common.constants.ResultCode;
 import jice.vigortech.chat.robot.common.model.web.BaseController;
 import jice.vigortech.chat.robot.common.util.CorsHandler;
-import jice.vigortech.chat.robot.modules.user.service.UserService;
+import jice.vigortech.chat.robot.modules.sys.user.service.UserService;
 
 @Controller
 public class LoginController extends BaseController implements LogoutSuccessHandler,AuthenticationSuccessHandler,AuthenticationFailureHandler {
