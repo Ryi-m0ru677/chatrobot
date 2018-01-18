@@ -7,7 +7,6 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
-import jice.vigortech.chat.robot.modules.sys.office.entity.Office;
 import jice.vigortech.chat.robot.modules.sys.role.dao.RoleDao;
 import jice.vigortech.chat.robot.modules.sys.role.entity.Role;
 import jice.vigortech.chat.robot.modules.sys.user.dao.UserDao;
@@ -38,8 +37,8 @@ public class SecurityUtils {
 		}
 		User user  = userDao.getUserByUserName(principal.getUsername());
 		//user.setRoleList(roleDao.getRoleByUser(user.getId()));
-		user.setCompany(new Office(user.getCompanyid()));
-		user.setOffice(new Office(user.getOfficeid()));
+		/*user.setCompany(new Office(user.getCompanyid()));
+		user.setOffice(new Office(user.getOfficeid()));*/
 		return user;
 	}
 	

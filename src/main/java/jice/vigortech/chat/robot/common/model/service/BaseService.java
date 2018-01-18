@@ -49,12 +49,12 @@ public abstract class BaseService {
 				for (String oa : StringUtils.split(officeAlias, ",")){
 					if (!dataScope.contains(r.getDataScope()) && StringUtils.isNotBlank(oa)){
 						if (Role.DATA_SCOPE_COMPANY.equals(r.getDataScope())){
-							sqlString.append(" OR " + oa + ".id = '" + user.getCompany().getId() + "'");
+							sqlString.append(" OR " + oa + ".id = '" + user.getCompanyid() + "'");
 							// 包括本公司下的部门 （type=1:公司；type=2：部门）
-							sqlString.append(" OR (" + oa + ".parent_id = '" + user.getCompany().getId() + "' AND " + oa + ".type = '2')");
+							sqlString.append(" OR (" + oa + ".parent_id = '" + user.getCompanyid() + "' AND " + oa + ".type = '2')");
 						}
 						else if (Role.DATA_SCOPE_OFFICE.equals(r.getDataScope())){
-							sqlString.append(" OR " + oa + ".id = '" + user.getOffice().getId() + "'");
+							sqlString.append(" OR " + oa + ".id = '" + user.getOfficeid() + "'");
 						}
 						else if (Role.DATA_SCOPE_CUSTOM.equals(r.getDataScope())){
 							sqlString.append(" OR EXISTS (SELECT 1 FROM sys_role_office WHERE role_id = '" + r.getId() + "'");

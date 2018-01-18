@@ -13,6 +13,7 @@ import jice.vigortech.chat.robot.common.util.SecurityUtils;
 import jice.vigortech.chat.robot.modules.sys.office.dao.OfficeDao;
 import jice.vigortech.chat.robot.modules.sys.office.entity.Office;
 import jice.vigortech.chat.robot.modules.sys.system.entity.PageQuery;
+import jice.vigortech.chat.robot.modules.sys.user.entity.User;
 
 @Service
 @Transactional(readOnly=true,rollbackFor=Exception.class)
@@ -74,7 +75,11 @@ public class OfficeService extends BaseService{
 		try {
 			if(office.getId()==null){
 				//添加
-				office.setCreateBy(SecurityUtils.getCurrentUser());
+				User user = SecurityUtils.getCurrentUser();
+				if(user==null){
+					return ResultCode.SESSION_INVALID;
+				}
+				office.setCreateBy(user);
 				officeDao.insertOffice(office);
 			}else{
 				//修改

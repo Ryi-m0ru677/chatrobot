@@ -49,16 +49,18 @@ public interface OfficeDao {
 			+ "from sys_office where del_flag=0 and id=${id}")
 	Map<String, Object> getOfficeDetailById(@Param("id")Integer id);
 
-	@Update("update sys_office set del_flag=0 and id=${id}")
+	@Update("update sys_office set del_flag=1 and id=${id}")
 	int deleteOfficeById(@Param("id")Integer id);
 
-	@Update("update sys_office set name=#{name},type=#{type},parent_id=#{parent} "
+	@Update("update sys_office set name=#{name},type=#{type},parent_id=#{parent}, "
 			+ "parent_ids=#{parentIds},update_date=#{updateDateString} where id=#{id}")
 	int updateOffice(Office office);
+	/*@Update("update sys_office set name=#{name} "
+			+ ",update_date=#{updateDateString} where id=#{id}")
+	int updateOffice(Office office);*/
 
 	@Insert("insert into sys_office (`name`,type,parent_id,parent_ids,create_by,create_date,update_date) "
-			+ "#{name},#{type},#{parent},#{parentIds},#{createBy.username}, "
-			+ "#{updateDateString},#{updateDateString}")
+			+ "values(#{name},#{type},#{parent},#{parentIds},#{createBy.username},#{updateDateString},#{updateDateString})")
 	int insertOffice(Office office);
 	
 	@Select("select id,`name`,type from sys_office where del_flag=0 order by id")

@@ -1,5 +1,6 @@
 package jice.vigortech.chat.robot.modules.sys.role.service;
 
+import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.lang3.StringUtils;
@@ -107,11 +108,11 @@ public class RoleService extends BaseService{
 	 */
 	public Object getRoleDetailById(Integer id) {
 		try {
-			Map<String,Object> temp = roleDao.getRoleById(id);
-			if(temp==null){
+			Map<String,Object> roleDetail = roleDao.getRoleById(id);
+			if(roleDetail==null){
 				return ResultCode.ROLE_NOT_EXITS;
 			}
-			return temp;
+			return roleDetail;
 		} catch (Exception e) {
 			e.printStackTrace();
 			return ResultCode.OPERATION_FAILED;
@@ -204,5 +205,72 @@ public class RoleService extends BaseService{
 		}
 	}
 	
+	/**
+	 * 移除用户与角色之间的关系
+	 * @param userId 用户id
+	 * @param id 角色id
+	 * @return
+	 */
+	@Transactional(readOnly=false,rollbackFor=Exception.class)
+	public ResultCode removeRoleUser(Integer userId) {
+		try {
+			roleDao.removeRoleUser(userId);
+			return ResultCode.OPERATION_SUCCESSED;
+		} catch (Exception e) {
+			e.printStackTrace();
+			return ResultCode.OPERATION_FAILED;
+		}
+	}
 	
+	/**
+	 * 移除主题与角色之间的关系
+	 * @param themeId 主题id
+	 * @return
+	 */
+	@Transactional(readOnly=false,rollbackFor=Exception.class)
+	public ResultCode removeRoleTheme(Integer themeId) {
+		try {
+			roleDao.removeRoleTheme(themeId);
+			return ResultCode.OPERATION_SUCCESSED;
+		} catch (Exception e) {
+			e.printStackTrace();
+			return ResultCode.OPERATION_FAILED;
+		}
+	}
+	
+	/**
+	 * 移除密级与角色之间关系
+	 * @param secretId
+	 * @return
+	 */
+	@Transactional(readOnly=false,rollbackFor=Exception.class)
+	public ResultCode removeRoleSecret(Integer secretId) {
+		try {
+			roleDao.removeRoleSecret(secretId);
+			return ResultCode.OPERATION_SUCCESSED;
+		} catch (Exception e) {
+			e.printStackTrace();
+			return ResultCode.OPERATION_FAILED;
+		}
+	}
+	
+	/**
+	 * 获取角色中密级和主题
+	 * @param id 角色id
+	 * @return
+	 */
+	public Object getRoleTsList(Integer id) {
+		try {
+			List<Map<String,Object>> themeList = roleDao.getRoleThemeList(id);
+			List<Map<String,Object>> secretList = roleDao.getRoleSecretList(id);
+			Map<String,Object> roleDetail = roleDao.getRoleById(id);
+			data.put("roleDetail", roleDetail);
+			data.put("themeList", themeList);
+			data.put("secretList", secretList);
+			return data;
+		} catch (Exception e) {
+			e.printStackTrace();
+			return ResultCode.OPERATION_FAILED;
+		}
+	}
 }

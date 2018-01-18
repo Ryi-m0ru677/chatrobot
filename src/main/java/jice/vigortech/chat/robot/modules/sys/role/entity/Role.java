@@ -18,12 +18,14 @@ public class Role extends BaseEntity implements Serializable{
 	private Integer id;
 	private String enName;//英文名称
 	private String name;
-	private String dataScope;//数据范围
+	private String dataScope;//数据范围dateScope
 	private List<Menu> menuList = Lists.newArrayList(); // 拥有菜单列表
 	private List<Office> officeList = Lists.newArrayList(); // 按明细设置数据范围
 	
 	
-	
+	public Role(){
+		super();
+	}
 	
 	public Role(Integer id, String enName, String name, String dataScope) {
 		super();

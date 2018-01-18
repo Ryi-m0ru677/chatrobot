@@ -15,6 +15,7 @@ import jice.vigortech.chat.robot.common.util.AESUtil;
 import jice.vigortech.chat.robot.common.util.Md5PasswordEncoderWithSalt;
 import jice.vigortech.chat.robot.common.util.SecurityUtils;
 import jice.vigortech.chat.robot.modules.sys.office.dao.OfficeDao;
+import jice.vigortech.chat.robot.modules.sys.role.dao.RoleDao;
 import jice.vigortech.chat.robot.modules.sys.system.entity.PageQuery;
 import jice.vigortech.chat.robot.modules.sys.user.dao.UserDao;
 import jice.vigortech.chat.robot.modules.sys.user.entity.User;
@@ -27,6 +28,8 @@ public class UserService extends BaseService{
 	UserDao userDao;
 	@Autowired
 	OfficeDao officeDao;
+	@Autowired
+	RoleDao roleDao;
 	/**
 	 * 获取用户列表
 	 * @param query
@@ -131,6 +134,7 @@ public class UserService extends BaseService{
 		}
 		try {
 			userDao.deleteUserById(id);
+			roleDao.removeRoleUser(id);
 			return ResultCode.OPERATION_SUCCESSED;
 		} catch (Exception e) {
 			e.printStackTrace();

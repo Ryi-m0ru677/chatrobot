@@ -18,9 +18,9 @@ import jice.vigortech.chat.robot.modules.sys.system.entity.PageQuery;
 public interface RoleDao {
 	
 	@Select("<script>"
-			+ "select a.id,a.name,a.enname,a.data_scope dateScope, a.create_by createBy, "
+			+ "select a.id,a.name,a.enname enName,a.data_scope dataScope, a.create_by createBy, "
 			+ "a.create_date createDate,a.update_date updateDate "
-			+ "from sys_role a"
+			+ "from sys_role a "
 			+ "LEFT JOIN sys_user uy ON uy.name=a.create_by "
 			+ "LEFT JOIN sys_office oy ON oy.id = uy.office_id "
 			+ "where a.del_flag=0 ${sql} "
@@ -48,7 +48,7 @@ public interface RoleDao {
 			+ "</script>")
 	int getRoleCount(PageQuery query);
 	
-	@Select("select id,`name`,enname,data_scope dateScope, create_by createBy, "
+	@Select("select id,`name`,enname enName,data_scope dataScope, create_by createBy, "
 			+ "create_date createDate,update_date updateDate "
 			+ "from sys_role "
 			+ "where del_flag=0 and id=${id}")
@@ -58,7 +58,7 @@ public interface RoleDao {
 	int deleteRoleById(@Param("id")Integer id);
 	
 	@Insert("insert into sys_role(`name`,enname,data_scope,create_by,create_date,update_date) "
-			+ "values(#{name},#{enName},#{dateScope},#{createBy.username},#{updateDateString},#{updateDateString})")
+			+ "values(#{name},#{enName},#{dataScope},#{createBy.username},#{updateDateString},#{updateDateString})")
 	@SelectKey(before = false, keyProperty = "id", resultType = Integer.class, statement = { "select last_insert_id()" })
 	int InsertRole(Role role);
 
@@ -67,7 +67,7 @@ public interface RoleDao {
 	int insert(@Param("officeId")Integer id,@Param("roleId") Integer id2);
 
 	@Update("update sys_role set name=#{name},enname=#{enName}, "
-			+ "date_scope=#{dateScope},update_date=#{updateDateString} "
+			+ "data_scope=#{dataScope},update_date=#{updateDateString} "
 			+ "where id=#{id}")
 	int updateRole(Role role);
 	
@@ -79,9 +79,9 @@ public interface RoleDao {
 	@Delete("delete from sys_role_office where role_id=${id}")
 	int deleteOfficeByRoleId(@Param("id")Integer id);
 	
-	@Select("select id,`name`,phone "
+	@Select("select id,`name`,phone, "
 			+ "company_id companyid,office_id officeid "
-			+ " from sys_user where id in ( "
+			+ "from sys_user where id in ( "
 			+ "select user_id from sys_user_role where role_id=${id}) "
 			+ "")
 	List<Map<String, Object>> getRoleUserList(@Param("id")Integer id);
@@ -97,4 +97,21 @@ public interface RoleDao {
 	@Insert("replace into sys_user_role (secret_id,role_id) "
 			+ "values(${secretId},${roleId}) ")
 	int addRoleSecret(@Param("secretId")Integer secretId,@Param("roleId") Integer id);
+
+	@Delete("delete from sys_user_role where user_id=${id}")
+	int removeRoleUser(@Param("id")Integer userId);
+	
+	@Delete("delete from sys_role_theme where theme_id=${id}")
+	int removeRoleTheme(@Param("id")Integer themeId);
+
+	@Delete("delete from sys_role_secret where secret_id=${id}")
+	int removeRoleSecret(@Param("id")Integer secretId);
+	
+	@Select("SELECT id,name from sys_theme WHERE del_flag=0 and id "
+			+ "in (SELECT theme_id from sys_role_theme  where role_id = ${id}) ")
+	List<Map<String, Object>> getRoleThemeList(@Param("id")Integer id);
+	
+	@Select("SELECT id,name from sys_secret WHERE del_flag=0 and id "
+			+ "in (SELECT secret_id from sys_role_secret  where role_id = ${id}) ")
+	List<Map<String, Object>> getRoleSecretList(@Param("id")Integer id);
 }

@@ -69,6 +69,18 @@ public class RoleController extends BaseController {
 		return Result();
 	}
 	
+	@RequestMapping("/role_ts_list")
+	public String getRoleTsList(@RequestParam("id")Integer id){
+		data = roleService.getRoleTsList(id);
+		if(data instanceof ResultCode){
+			resCode = (ResultCode) data;
+			data = null;
+		}else{
+			resCode  = ResultCode.OPERATION_SUCCESSED;
+		}
+		return Result();
+	}
+	
 	@RequestMapping("/role_add_user")
 	public String addRoleUser(@RequestParam("userIds")String userIds,@RequestParam("id") Integer id){
 		data = null;
@@ -76,12 +88,32 @@ public class RoleController extends BaseController {
 		return Result();
 	}
 	
-	@RequestMapping("/role_add_others")
+	@RequestMapping("/role_remove_user")
+	public String removeRoleUser(@RequestParam("userId")Integer userId){
+		data = null;
+		resCode = roleService.removeRoleUser(userId);
+		return Result();
+	}
+	
+	@RequestMapping("/role_add_tsids")
 	public String addRoleTheme(@RequestParam("themeIds")String themeIds,@RequestParam("secretIds")String secretIds,@RequestParam("id") Integer id){
 		data = null;
 		resCode = roleService.addRoleThemeAndSecret(themeIds,id,secretIds);
 		return Result();
 	}
 	
+	@RequestMapping("/role_remove_theme")
+	public String removeRoleTheme(@RequestParam("themeId")Integer themeId){
+		data = null;
+		resCode = roleService.removeRoleTheme(themeId);
+		return Result();
+	}
+	
+	@RequestMapping("/role_remove_secret")
+	public String removeRoleSecret(@RequestParam("secretId")Integer secretId){
+		data = null;
+		resCode = roleService.removeRoleSecret(secretId);
+		return Result();
+	}
 	
 }
